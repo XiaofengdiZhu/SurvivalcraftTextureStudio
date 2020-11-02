@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="SurvivalcraftTextureStudio.PaletteSelector" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SurvivalcraftTextureStudio" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" MaxWidth="680" HorizontalAlignment="Stretch" d:DesignHeight="600"
+             d:DesignWidth="800" mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:PaletteNameConverter x:Key="paletteNameConverter" />
+        <Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="Button">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Foreground">
+                <Setter.Value>
+                    <SolidColorBrush Color="{Binding ExemplarHue.Foreground, Mode=OneTime}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PalettePath" TargetType="Path">
+            <Setter Property="Data" Value="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z" />
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <SolidColorBrush Color="{Binding ExemplarHue.Foreground, Mode=OneTime}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate DataType="{x:Type materialDesignColors:Swatch}">
+            <wpf:Card Width="160" Margin="2,2,6,6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.ColumnSpan="2" Margin="8"
+                               Text="{Binding Name, Converter={StaticResource paletteNameConverter}}" />
+                    <Border Grid.Row="1" Grid.Column="0" MinWidth="80">
+                        <Border.Background>
+                            <SolidColorBrush Color="{Binding ExemplarHue.Color, Mode=OneTime}" />
+                        </Border.Background>
+                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:PaletteSelector}}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}" CommandParameter="{Binding}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="主要" />
+                                <Viewbox Width="16" Height="16">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Style="{StaticResource PalettePath}" />
+                                    </Canvas>
+                                </Viewbox>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Width="80"
+                            Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+                        <Border.Background>
+                            <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}" />
+                        </Border.Background>
+                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:PaletteSelector}}, Path=DataContext.ApplyAccentCommand, Mode=OneTime}" CommandParameter="{Binding}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="强调" />
+                                <Viewbox Width="16" Height="16">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Style="{StaticResource PalettePath}" />
+                                    </Canvas>
+                                </Viewbox>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+                </Grid>
+            </wpf:Card>
+        </DataTemplate>
+    </UserControl.Resources>
+    <DockPanel>
+        <wpf:Card Margin="10" Padding="10" DockPanel.Dock="Top">
+            <DockPanel>
+                <local:Palette x:Name="Palette" Width="210" Height="210" DockPanel.Dock="Left"
+                               Loaded="Palette_Loaded" />
+            </DockPanel>
+        </wpf:Card>
+        <Grid Margin="0,16,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Margin="8" Orientation="Horizontal">
+                <materialDesign:PackIcon VerticalAlignment="Bottom" Kind="ThemeLightDark" />
+                <TextBlock Margin="0,0,50,0" VerticalAlignment="Center">背景</TextBlock>
+                <TextBlock VerticalAlignment="Center">亮</TextBlock>
+                <ToggleButton Name="toggleButton" Margin="8,0,16,0"
+                              Command="{Binding ToggleBaseCommand}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+                <TextBlock VerticalAlignment="Center">暗</TextBlock>
+            </StackPanel>
+            <ItemsControl Grid.Row="1" Margin="0,12,0,0"
+                          ItemsSource="{Binding Swatches, Mode=OneTime}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="SurvivalcraftTextureStudio.Palette" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SurvivalcraftTextureStudio" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Width="210" Height="210" d:DesignHeight="210"
+             d:DesignWidth="210" mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:PaletteNameConverter x:Key="paletteNameConverter" />
+    </UserControl.Resources>
+    <Grid Background="{DynamicResource PrimaryHueMidBrush}">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontWeight" Value="DemiBold" />
+                <Setter Property="Margin" Value="4" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.ColumnSpan="3" Height="70" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                Style="{StaticResource MaterialDesignRaisedButton}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="主要 -" />
+                <TextBlock Text="{Binding NowPrimaryName, Converter={StaticResource paletteNameConverter}}" />
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="0" Height="70" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                Style="{StaticResource MaterialDesignRaisedLightButton}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"
+                       Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                淡色
+            </TextBlock>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="1" Height="70" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                Style="{StaticResource MaterialDesignRaisedButton}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                普通
+            </TextBlock>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="2" Height="70" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                Style="{StaticResource MaterialDesignRaisedDarkButton}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                深色
+            </TextBlock>
+        </Button>
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Height="70"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="强调 -" />
+                <TextBlock Text="{Binding NowAccentName, Converter={StaticResource paletteNameConverter}}" />
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>

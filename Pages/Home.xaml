@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="SurvivalcraftTextureStudio.Home" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="600" d:DesignWidth="1300" mc:Ignorable="d">
+    <Grid Margin="0" VerticalAlignment="Stretch">
+        <StackPanel Orientation="Vertical" Margin="100">
+        <Button x:Name="BT" Content="按钮" Width="200" Margin="20" Click="BT_Click" />
+            <TextBox x:Name="TB" Text="Hello, world!" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" AcceptsReturn="True" />
+        </StackPanel>
+    </Grid>
+</UserControl>
