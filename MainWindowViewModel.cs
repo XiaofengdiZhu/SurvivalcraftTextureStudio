@@ -15,7 +15,7 @@ namespace SurvivalcraftTextureStudio
             {
                 new Page("HomePageTitle", new Home(), PackIconKind.Home),
                 new Page("UISettingsPageTitle", new PaletteSelector() { DataContext = new PaletteSelectorViewModel() },PackIconKind.Theme){ VerticalScrollBarVisibilityRequirement = ScrollBarVisibility.Auto},
-                new Page("BlocksPageTitle", new BlocksPage() { DataContext = new BlocksPageViewModel() },PackIconKind.CubeOutline){ VerticalScrollBarVisibilityRequirement = ScrollBarVisibility.Auto},
+                new Page("BlocksPageTitle", new BlocksPage() { DataContext = new BlocksPageViewModel() },PackIconKind.CubeOutline){MarginRequirement=new System.Windows.Thickness(0) },
             };
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
             VersionText = "v" + version.Major + "." + version.Minor + (version.Build > 0 ? ("." + version.Build) : "") + (version.Revision > 0 ? " beta" + (version.Revision > 1 ? (" " + version.Revision) : "") : "");

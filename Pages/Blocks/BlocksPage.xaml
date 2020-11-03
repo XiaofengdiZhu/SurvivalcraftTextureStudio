@@ -30,21 +30,42 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <DockPanel>
-            <ScrollViewer Margin="0">
-                <ItemsControl x:Name="wrap" Grid.Row="1" Margin="0,12,0,0"
-                              ItemsSource="{Binding BlockTexturesValues, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
-        </DockPanel>
-        <Button Margin="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" ToolTip="导出"
+        <ScrollViewer Margin="16">
+            <ItemsControl x:Name="wrap" Grid.Row="1" Margin="0,12,0,0"
+                          ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+        <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
+                wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsExportingBlocksTexture}"
+                Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
-            <wpf:PackIcon Width="24" Height="24" Kind="Download"/>
+            <!--  simple example of toggling/animating pack icon with a data trigger  -->
+            <wpf:PackIcon Width="24" Height="24">
+                <wpf:PackIcon.Style>
+                    <Style BasedOn="{StaticResource {x:Type wpf:PackIcon}}" TargetType="wpf:PackIcon">
+                        <Setter Property="Kind" Value="Download"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
+                                <Setter Property="Kind" Value="Check"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </wpf:PackIcon.Style>
+            </wpf:PackIcon>
         </Button>
     </Grid>
 </UserControl>
