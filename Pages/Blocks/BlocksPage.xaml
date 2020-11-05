@@ -12,22 +12,28 @@
         <local:BlocksPageViewModel/>
     </UserControl.DataContext>
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type local:BlockTextureInfo}">
-            <wpf:Card Width="120" Height="120" Margin="6">
-                <Grid>
-                    <wpf:PackIcon Width="120" Height="120" Kind="Cancel"
-                                  Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
-                    <Image Width="120" Height="120" Source="{Binding Texture}"/>
-                    <Border VerticalAlignment="Bottom" Background="#4C000000">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,10,0" Text="{Binding Index}"/>
-                            <TextBlock Margin="0,0,10,0" Text="{Binding Name}"/>
-                            <Button Content="点我" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.ChangeImageCommand, Mode=OneTime}" CommandParameter="{Binding}"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </wpf:Card>
-        </DataTemplate>
+        <ResourceDictionary>
+            <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
+            <DataTemplate DataType="{x:Type local:BlockTextureInfo}">
+                <wpf:Card Width="120" Height="120" Margin="6">
+                    <Grid>
+                        <wpf:PackIcon Width="120" Height="120" Kind="Cancel"
+                                      Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
+                        <Image Width="120" Height="120" Source="{Binding Texture, IsAsync=True}"/>
+                        <Border VerticalAlignment="Bottom" Background="#4C000000">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,10,0" Text="{Binding Index}"/>
+                                <TextBlock Margin="0,0,10,0" Text="{Binding Name}"/>
+                                <Button Content="点我"
+                                        IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.ChangeImageCommand, Mode=OneTime}"
+                                        CommandParameter="{Binding}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </wpf:Card>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <ScrollViewer Margin="16">
@@ -42,7 +48,8 @@
         </ScrollViewer>
         <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
-                wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsExportingBlocksTexture}"
+                wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
+                IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}"
                 Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                 ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">

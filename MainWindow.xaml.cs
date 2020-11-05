@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -285,44 +284,6 @@ namespace SurvivalcraftTextureStudio
         {
             SelectedPageIndex = PagesListBox.SelectedIndex == -1 ? null : (PageIndex?)PagesListBox.SelectedIndex;
             DateTime now = DateTime.Now;
-        }
-    }
-
-    public class WideDrawerConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            bool? input = value as bool?;
-            if (input.HasValue && input.Value)
-            {
-                return ShadowDepth.Depth2;
-            }
-            return ShadowDepth.Depth0;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class RippleBrushConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            SolidColorBrush input = value as SolidColorBrush;
-            if (input != null)
-            {
-                Color color = input.Color;
-                Color newColor = Color.FromRgb(color.R, color.G, color.B);
-                return new SolidColorBrush(newColor);
-            }
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
         }
     }
 }

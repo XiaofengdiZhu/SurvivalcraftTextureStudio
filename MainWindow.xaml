@@ -28,7 +28,7 @@
         WindowStyle="SingleBorderWindow"
         mc:Ignorable="d">
     <Window.CommandBindings>
-        <CommandBinding Command="Copy" Executed="OnCopy"/>
+        <CommandBinding Executed="OnCopy" Command="Copy"/>
     </Window.CommandBindings>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="24" CornerRadius="0" GlassFrameThickness="1"
@@ -43,6 +43,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:WideDrawerConverter x:Key="wideDrawerConverter"/>
             <local:RippleBrushConverter x:Key="rippleBrushConverter"/>
+            <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
             <ContextMenu x:Key="NotifyIconMenu" LostFocus="ContextMenu_LostFocus" StaysOpen="False">
                 <MenuItem Name="NotifyIconMenuOpen" Click="NotifyIconMenuOpen_Click" Header="打开">
                     <MenuItem.Icon>
@@ -74,7 +75,8 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15"/>
+                                                <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
+                                                                 To="1" Duration="0:0:0.15"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -83,7 +85,8 @@
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
+                                                                 To="0" Duration="0:0:0.15"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -136,7 +139,9 @@
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <Border Width="212" Padding="16">
                     <StackPanel>
-                        <ToggleButton Margin="0,0,0,16" HorizontalAlignment="Right" IsChecked="{Binding ElementName=NarrowDrawerToggleButton, Path=IsChecked, Mode=TwoWay}" Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+                        <ToggleButton Margin="0,0,0,16" HorizontalAlignment="Right"
+                                      IsChecked="{Binding ElementName=NarrowDrawerToggleButton, Path=IsChecked, Mode=TwoWay}"
+                                      Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <StackPanel Margin="14,4">
                                 <TextBlock lan:Xaml.Key="SoftwareName"/>
@@ -171,7 +176,9 @@
                             </StackPanel>
                         </StackPanel>
                         <Separator Margin="12,20" Style="{StaticResource MaterialDesignSeparator}"/>
-                        <ListBox x:Name="PagesListBox" ItemsSource="{Binding Pages}" SelectedIndex="0" SelectionChanged="PagesListBox_SelectionChanged">
+                        <ListBox x:Name="PagesListBox"
+                                 ItemsSource="{Binding Pages}"
+                                 SelectedIndex="0" SelectionChanged="PagesListBox_SelectionChanged">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="domain:DemoItem">
                                     <StackPanel IsEnabled="False" Orientation="Horizontal">
@@ -183,7 +190,8 @@
                         </ListBox>
                     </StackPanel>
                 </materialDesign:ColorZone>
-                <materialDesign:ColorZone Height="24" materialDesign:ShadowAssist.ShadowDepth="Depth0" DockPanel.Dock="Top" Mode="PrimaryDark">
+                <materialDesign:ColorZone Height="24" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                          DockPanel.Dock="Top" Mode="PrimaryDark">
                     <DockPanel>
                         <ListBox Padding="0" HorizontalAlignment="Right"
                                  Background="{DynamicResource PrimaryHueDarkBrush}"
@@ -193,7 +201,9 @@
                             <ListBoxItem Selected="WindowControlButton_Selected" Style="{StaticResource WindowControlButton}" Tag="Min">
                                 <materialDesign:PackIcon Width="16" Kind="WindowMinimize"/>
                             </ListBoxItem>
-                            <ListBoxItem x:Name="MaximizeWindowButton" Selected="WindowControlButton_Selected" Style="{StaticResource WindowControlButton}" Tag="Max">
+                            <ListBoxItem x:Name="MaximizeWindowButton" Selected="WindowControlButton_Selected"
+                                         Style="{StaticResource WindowControlButton}"
+                                         Tag="Max">
                                 <materialDesign:PackIcon x:Name="WindowControlButtonContent" Width="16" Kind="WindowMaximize"/>
                             </ListBoxItem>
                             <ListBoxItem Width="48" BorderBrush="#D0FF0000" Selected="WindowControlButton_Selected"
@@ -250,7 +260,9 @@
                                 materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
                                 BorderBrush="Transparent" Cursor="Hand" DockPanel.Dock="Right"
                                 Style="{StaticResource MaterialDesignFloatingActionButton}">
-                            <materialDesign:PackIcon Width="24" Height="24" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Kind="Account"/>
+                            <materialDesign:PackIcon Width="24" Height="24"
+                                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                                     Kind="Account"/>
                         </Button>
                         <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                    lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"

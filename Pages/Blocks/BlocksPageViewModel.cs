@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -75,17 +72,17 @@ namespace SurvivalcraftTextureStudio
         public ICommand ChangeImageCommand { get; set; }
 
         public ICommand ExportBlocksTextureCommand { get; set; }
-        public bool _IsExportingBlocksTexture = false;
+        public bool _IsOperatingBlocksTexture = false;
 
-        public bool IsExportingBlocksTexture
+        public bool IsOperatingBlocksTexture
         {
-            get { return _IsExportingBlocksTexture; }
+            get { return _IsOperatingBlocksTexture; }
             set
             {
-                if (_IsExportingBlocksTexture != value)
+                if (_IsOperatingBlocksTexture != value)
                 {
-                    _IsExportingBlocksTexture = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsExportingBlocksTexture"));
+                    _IsOperatingBlocksTexture = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsOperatingBlocksTexture"));
                 }
             }
         }
@@ -107,19 +104,38 @@ namespace SurvivalcraftTextureStudio
 
         public void ChangeImage(BlockTextureInfo block)
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            openFileDialog.Title = "选择图片";
-            openFileDialog.Filter = "png文件|*.png|所有文件|*.*";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.Multiselect = false;
-            openFileDialog.DefaultExt = "png";
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (IsOperatingBlocksTexture)
             {
-                BlockTexturesDictionary[block.Index].Name = "test";
-                BlockTexturesDictionary[block.Index].Texture = new BitmapImage(new Uri(openFileDialog.FileName));
-                BlockTexturesDictionary[block.Index].BitmapCache = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
+                return;
             }
+            IsOperatingBlocksTexture = true;
+            Thread ChangeImageThread = new Thread(() =>
+            {
+                System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+                openFileDialog.Title = "选择图片";
+                openFileDialog.Filter = "png文件|*.png|所有文件|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Multiselect = false;
+                openFileDialog.DefaultExt = "png";
+                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    lock (BlockTexturesDictionary)
+                    {
+                        //BlockTexturesDictionary[block.Index].Name = "test";
+                        Bitmap bitmap = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
+                        BitmapImage image = Bitmap2BitmapImage(bitmap);
+                        BlockTexturesDictionary[block.Index].BitmapCache = bitmap;
+                        BlocksPage.BP.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            BlockTexturesDictionary[block.Index].Texture = image;
+                        }));
+                    }
+                }
+                IsOperatingBlocksTexture = false;
+            });
+            ChangeImageThread.SetApartmentState(ApartmentState.STA);
+            ChangeImageThread.Start();
         }
 
         public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
@@ -131,21 +147,27 @@ namespace SurvivalcraftTextureStudio
             bitmapImage.BeginInit();
             bitmapImage.StreamSource = memory;
             bitmapImage.EndInit();
+            bitmapImage.Freeze();
             return bitmapImage;
         }
 
         public void ExportBlocksTexture()
         {
-            IsExportingBlocksTexture = true;
-            IsExportComplete = false;
-            Task.Factory.StartNew(() =>
+            if (IsOperatingBlocksTexture)
             {
+                return;
+            }
+            IsOperatingBlocksTexture = true;
+            IsExportComplete = false;
+            Thread ExportThread = new Thread(() =>
+            {
+                Bitmap tempBitmap;
                 lock (BlockTexturesDictionary)
                 {
                     Bitmap first = BlockTexturesDictionary[0].BitmapCache;
                     int perBlockSize = first.Width;
                     PixelFormat pixelFormat = first.PixelFormat;
-                    Bitmap tempBitmap = new Bitmap(perBlockSize * 16, perBlockSize * 16, pixelFormat);
+                    tempBitmap = new Bitmap(perBlockSize * 16, perBlockSize * 16, pixelFormat);
                     for (int i = 0; i < 16; i++)
                     {
                         for (int j = 0; j < 16; j++)
@@ -159,24 +181,25 @@ namespace SurvivalcraftTextureStudio
                             }
                         }
                     }
-                    MainWindow.MW.Dispatcher.BeginInvoke(new Action(()=>
-                    {
-                        System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-                        saveFileDialog.Title = "选择保存位置";
-                        saveFileDialog.Filter = "png文件|*.png|所有文件|*.*";
-                        saveFileDialog.FileName = "Blocks.png";
-                        saveFileDialog.FilterIndex = 1;
-                        saveFileDialog.RestoreDirectory = true;
-                        saveFileDialog.DefaultExt = "png";
-                        if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            tempBitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
-                        }
-                    }));
                 }
+                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog()
+                {
+                    Title = "选择保存位置",
+                    Filter = "png文件|*.png|所有文件|*.*",
+                    FileName = "Blocks.png",
+                    FilterIndex = 1,
+                    RestoreDirectory = true,
+                    DefaultExt = "png"
+                };
+                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    tempBitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+                    IsExportComplete = true;
+                }
+                IsOperatingBlocksTexture = false;
             });
-            IsExportingBlocksTexture = false;
-            IsExportComplete = true;
+            ExportThread.SetApartmentState(ApartmentState.STA);
+            ExportThread.Start();
         }
     }
 }

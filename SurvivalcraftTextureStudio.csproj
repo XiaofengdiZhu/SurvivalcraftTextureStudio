@@ -106,6 +106,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\RippleBrushConverter.cs" />
+    <Compile Include="Converters\WideDrawerConverter.cs" />
     <Page Include="Dialogs\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +154,7 @@
       <DependentUpon>BlocksPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Blocks\BlocksPageViewModel.cs" />
+    <Compile Include="Converters\FlipBooleanConverter.cs" />
     <Compile Include="Pages\PaletteSelector.xaml.cs">
       <DependentUpon>PaletteSelector.xaml</DependentUpon>
     </Compile>
