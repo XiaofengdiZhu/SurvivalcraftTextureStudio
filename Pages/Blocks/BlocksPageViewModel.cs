@@ -15,27 +15,22 @@ namespace SurvivalcraftTextureStudio
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        public int NowPerBlockSize = 32;
+        public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
+
         public BlocksPageViewModel()
         {
             BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
             //BlockTextures = new List<BlockTextureInfo>();
             Bitmap OrigianlBlocksTexture = new Bitmap(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/OriginalBlocksTextureFrom2.2.png", UriKind.RelativeOrAbsolute)).Stream);
-            int perBlockSize = OrigianlBlocksTexture.Width / 16;
-            PixelFormat pixelFormat = OrigianlBlocksTexture.PixelFormat;
+            NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
+            NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
             for (int i = 0; i < 16; i++)
             {
                 for (int j = 0; j < 16; j++)
                 {
-                    Bitmap tempBitmap = new Bitmap(perBlockSize, perBlockSize, pixelFormat);
-                    for (int y = 0; y < perBlockSize; y++)
-                    {
-                        for (int x = 0; x < perBlockSize; x++)
-                        {
-                            tempBitmap.SetPixel(x, y, OrigianlBlocksTexture.GetPixel(j * perBlockSize + x, i * perBlockSize + y));
-                        }
-                    }
-                    //BlockTextures.Add(new BlockTextureInfo(i * 16 + j) { Texture= Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
-                    BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
+                    Bitmap tempBitmap = ImageHelper.CropBitmap(OrigianlBlocksTexture, j * NowPerBlockSize, i * NowPerBlockSize, NowPerBlockSize, NowPerBlockSize);
+                    BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
                 }
             }
             InitiateCommands();
@@ -124,31 +119,15 @@ namespace SurvivalcraftTextureStudio
                     {
                         //BlockTexturesDictionary[block.Index].Name = "test";
                         Bitmap bitmap = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
-                        BitmapImage image = Bitmap2BitmapImage(bitmap);
+                        BitmapImage image = ImageHelper.Bitmap2BitmapImage(bitmap);
                         BlockTexturesDictionary[block.Index].BitmapCache = bitmap;
-                        BlocksPage.BP.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            BlockTexturesDictionary[block.Index].Texture = image;
-                        }));
+                        BlockTexturesDictionary[block.Index].Texture = image;
                     }
                 }
                 IsOperatingBlocksTexture = false;
             });
             ChangeImageThread.SetApartmentState(ApartmentState.STA);
             ChangeImageThread.Start();
-        }
-
-        public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
-        {
-            MemoryStream memory = new MemoryStream();
-            bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-            memory.Position = 0;
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            return bitmapImage;
         }
 
         public void ExportBlocksTexture()
@@ -164,19 +143,16 @@ namespace SurvivalcraftTextureStudio
                 Bitmap tempBitmap;
                 lock (BlockTexturesDictionary)
                 {
-                    Bitmap first = BlockTexturesDictionary[0].BitmapCache;
-                    int perBlockSize = first.Width;
-                    PixelFormat pixelFormat = first.PixelFormat;
-                    tempBitmap = new Bitmap(perBlockSize * 16, perBlockSize * 16, pixelFormat);
+                    tempBitmap = new Bitmap(NowPerBlockSize * 16, NowPerBlockSize * 16, NowPixelFormat);
                     for (int i = 0; i < 16; i++)
                     {
                         for (int j = 0; j < 16; j++)
                         {
-                            for (int y = 0; y < perBlockSize; y++)
+                            for (int y = 0; y < NowPerBlockSize; y++)
                             {
-                                for (int x = 0; x < perBlockSize; x++)
+                                for (int x = 0; x < NowPerBlockSize; x++)
                                 {
-                                    tempBitmap.SetPixel(j * perBlockSize + x, i * perBlockSize + y, BlockTexturesDictionary[i * 16 + j].BitmapCache.GetPixel(x, y));
+                                    tempBitmap.SetPixel(j * NowPerBlockSize + x, i * NowPerBlockSize + y, BlockTexturesDictionary[i * 16 + j].BitmapCache.GetPixel(x, y));
                                 }
                             }
                         }

@@ -19,7 +19,9 @@
                     <Grid>
                         <wpf:PackIcon Width="120" Height="120" Kind="Cancel"
                                       Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
-                        <Image Width="120" Height="120" Source="{Binding Texture, IsAsync=True}"/>
+                        <Image Width="120" Height="120" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               RenderOptions.CachingHint="Cache"
+                               Source="{Binding Texture, IsAsync=True}"/>
                         <Border VerticalAlignment="Bottom" Background="#4C000000">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Margin="0,0,10,0" Text="{Binding Index}"/>

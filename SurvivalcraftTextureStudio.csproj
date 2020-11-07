@@ -166,6 +166,7 @@
     <Compile Include="Pages\Widgets\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Programs\ImageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -200,9 +201,7 @@
     <Resource Include="blank.ico" />
     <Resource Include="favicon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Programs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\OriginalBlocksTextureFrom2.2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
