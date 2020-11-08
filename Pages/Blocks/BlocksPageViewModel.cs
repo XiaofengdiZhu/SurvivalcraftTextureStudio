@@ -29,7 +29,7 @@ namespace SurvivalcraftTextureStudio
             {
                 for (int j = 0; j < 16; j++)
                 {
-                    Bitmap tempBitmap = ImageHelper.CropBitmap(OrigianlBlocksTexture, j * NowPerBlockSize, i * NowPerBlockSize, NowPerBlockSize, NowPerBlockSize);
+                    Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16+j, NowPerBlockSize);
                     BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
                 }
             }
@@ -117,8 +117,7 @@ namespace SurvivalcraftTextureStudio
                 {
                     lock (BlockTexturesDictionary)
                     {
-                        //BlockTexturesDictionary[block.Index].Name = "test";
-                        Bitmap bitmap = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
+                        Bitmap bitmap =ImageHelper.ResizeBitmapByImageSharp( new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)),NowPerBlockSize,NowPerBlockSize);
                         BitmapImage image = ImageHelper.Bitmap2BitmapImage(bitmap);
                         BlockTexturesDictionary[block.Index].BitmapCache = bitmap;
                         BlockTexturesDictionary[block.Index].Texture = image;

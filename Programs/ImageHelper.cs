@@ -22,7 +22,7 @@ namespace SurvivalcraftTextureStudio
             return output;
         }
 
-        public static Bitmap GetBlockBitmapFromTexture(Bitmap texture, int index)
+        public static Bitmap GetBlockBitmapFromTexture(Bitmap texture, int index, int perBlockSize)
         {
             if (index < 0 || index > 255)
             {
@@ -30,7 +30,6 @@ namespace SurvivalcraftTextureStudio
             }
             else
             {
-                int perBlockSize = texture.Width / 16;
                 return CropBitmap(texture, index % 16 * perBlockSize, index / 16 * perBlockSize, perBlockSize, perBlockSize);
             }
         }
@@ -71,6 +70,10 @@ namespace SurvivalcraftTextureStudio
                     {
                     }
                 }
+            }
+            else
+            {
+                return new ResizedSIzeAndCropRectangleOrTargetRectangle() { ResizedSIze = new System.Drawing.Size(width, height), TargetRectangle = new System.Drawing.Rectangle(0, 0, width, height) };
             }
             return null;
         }
@@ -129,7 +132,7 @@ namespace SurvivalcraftTextureStudio
             return max;
         }
 
-        public static Bitmap ResizeBitmap(Bitmap input, int width, int height, System.Drawing.Drawing2D.InterpolationMode interpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor)
+        public static Bitmap ResizeBitmap(Bitmap input, int width, int height, ScaleMode scaleMode=ScaleMode.Stretch, System.Drawing.Drawing2D.InterpolationMode interpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor)
         {
             Bitmap output = new Bitmap(width, height);
             using (Graphics g = Graphics.FromImage(output))
@@ -144,6 +147,7 @@ namespace SurvivalcraftTextureStudio
         {
             MemoryStream memory = new MemoryStream();
             input.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+            memory.Position = 0;
             SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(memory, new BmpDecoder());
             image.Mutate(i => { i.Resize(width, height, resampler ?? KnownResamplers.NearestNeighbor); });
             MemoryStream newMemory = new MemoryStream();
