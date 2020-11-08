@@ -21,7 +21,6 @@ namespace SurvivalcraftTextureStudio
         public BlocksPageViewModel()
         {
             BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
-            //BlockTextures = new List<BlockTextureInfo>();
             Bitmap OrigianlBlocksTexture = new Bitmap(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/OriginalBlocksTextureFrom2.2.png", UriKind.RelativeOrAbsolute)).Stream);
             NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
             NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
@@ -29,7 +28,7 @@ namespace SurvivalcraftTextureStudio
             {
                 for (int j = 0; j < 16; j++)
                 {
-                    Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16+j, NowPerBlockSize);
+                    Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
                     BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
                 }
             }
@@ -115,12 +114,12 @@ namespace SurvivalcraftTextureStudio
                 openFileDialog.DefaultExt = "png";
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    lock (BlockTexturesDictionary)
+                    lock (block)
                     {
-                        Bitmap bitmap =ImageHelper.ResizeBitmapByImageSharp( new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)),NowPerBlockSize,NowPerBlockSize);
+                        Bitmap bitmap = ImageHelper.ResizeBitmapByImageSharp(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), NowPerBlockSize, NowPerBlockSize);
                         BitmapImage image = ImageHelper.Bitmap2BitmapImage(bitmap);
-                        BlockTexturesDictionary[block.Index].BitmapCache = bitmap;
-                        BlockTexturesDictionary[block.Index].Texture = image;
+                        block.BitmapCache = bitmap;
+                        block.Texture = image;
                     }
                 }
                 IsOperatingBlocksTexture = false;
@@ -139,20 +138,16 @@ namespace SurvivalcraftTextureStudio
             IsExportComplete = false;
             Thread ExportThread = new Thread(() =>
             {
-                Bitmap tempBitmap;
+                Bitmap tempBitmap = new Bitmap(NowPerBlockSize * 16, NowPerBlockSize * 16, NowPixelFormat);
                 lock (BlockTexturesDictionary)
                 {
-                    tempBitmap = new Bitmap(NowPerBlockSize * 16, NowPerBlockSize * 16, NowPixelFormat);
+                    using (Graphics g = Graphics.FromImage(tempBitmap))
+                    {
                     for (int i = 0; i < 16; i++)
                     {
-                        for (int j = 0; j < 16; j++)
-                        {
-                            for (int y = 0; y < NowPerBlockSize; y++)
+                            for (int j = 0; j < 16; j++)
                             {
-                                for (int x = 0; x < NowPerBlockSize; x++)
-                                {
-                                    tempBitmap.SetPixel(j * NowPerBlockSize + x, i * NowPerBlockSize + y, BlockTexturesDictionary[i * 16 + j].BitmapCache.GetPixel(x, y));
-                                }
+                                g.DrawImage(BlockTexturesDictionary[i * 16 + j].BitmapCache, j * NowPerBlockSize, i * NowPerBlockSize);
                             }
                         }
                     }

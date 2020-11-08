@@ -167,6 +167,7 @@
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
     <Compile Include="Programs\ImageHelper.cs" />
+    <Compile Include="Programs\MathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
