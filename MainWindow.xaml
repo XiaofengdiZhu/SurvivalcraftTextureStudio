@@ -1,4 +1,4 @@
-﻿<Window x:Class="SurvivalcraftTextureStudio.MainWindow"
+<Window x:Class="SurvivalcraftTextureStudio.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -163,10 +163,10 @@
                 </Border>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel>
-                <materialDesign:ColorZone x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch"
+                <materialDesign:Card x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch"
                                           materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
                                           Background="{DynamicResource MaterialDesignCardBackground}"
-                                          DockPanel.Dock="Left" Mode="Standard">
+                                          DockPanel.Dock="Left" UniformCornerRadius="0">
                     <StackPanel Margin="16,0,16,16">
                         <Border Height="24" Margin="-16,0" Background="{DynamicResource MaterialDesignChipBackground}"/>
                         <StackPanel Margin="0,12,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
@@ -189,7 +189,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
-                </materialDesign:ColorZone>
+                </materialDesign:Card>
                 <materialDesign:ColorZone Height="24" materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                           DockPanel.Dock="Top" Mode="PrimaryDark">
                     <DockPanel>
@@ -214,9 +214,9 @@
                         </ListBox>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          materialDesign:ShadowAssist.ShadowEdges="Bottom" DockPanel.Dock="Top"
-                                          Mode="PrimaryMid">
+                <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                          materialDesign:ShadowAssist.ShadowEdges="Bottom" DockPanel.Dock="Top" UniformCornerRadius="0"
+                                          Background="{DynamicResource PrimaryHueMidBrush}" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                     <DockPanel>
                         <ToggleButton x:Name="WideDrawerToggleButton" IsChecked="True" Style="{StaticResource MaterialDesignHamburgerToggleButton}">
                             <ToggleButton.Triggers>
@@ -268,7 +268,7 @@
                                    lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"
                                    FontSize="22"/>
                     </DockPanel>
-                </materialDesign:ColorZone>
+                </materialDesign:Card>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

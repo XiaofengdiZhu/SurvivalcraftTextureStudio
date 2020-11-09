@@ -1,4 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -12,7 +12,7 @@ namespace SurvivalcraftTextureStudio
             bool? input = value as bool?;
             if (input.HasValue && input.Value)
             {
-                return ShadowDepth.Depth2;
+                return ShadowDepth.Depth3;
             }
             return ShadowDepth.Depth0;
         }

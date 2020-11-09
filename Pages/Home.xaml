@@ -2,9 +2,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="600" d:DesignWidth="1300" mc:Ignorable="d">
     <Grid Margin="0" VerticalAlignment="Stretch">
-        <StackPanel Orientation="Vertical" Margin="100">
-        <Button x:Name="BT" Content="按钮" Width="200" Margin="20" Click="BT_Click" />
-            <TextBox x:Name="TB" Text="Hello, world!" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" AcceptsReturn="True" />
-        </StackPanel>
+        <DockPanel>
+            <materialDesign:Card
+    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+    Padding="32" DockPanel.Dock="Top">
+                DEPTH 1
+            </materialDesign:Card>
+            <materialDesign:Card
+    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+    Padding="32" DockPanel.Dock="Right">
+                DEPTH 2
+            </materialDesign:Card>
+            <materialDesign:Card DockPanel.Dock="Bottom"
+    materialDesign:ShadowAssist.ShadowDepth="Depth3"
+    Padding="32">
+                DEPTH 3
+            </materialDesign:Card>
+            <materialDesign:Card DockPanel.Dock="Left"
+    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+    Padding="32">
+                DEPTH 4
+            </materialDesign:Card>
+            <materialDesign:Card
+    materialDesign:ShadowAssist.ShadowDepth="Depth5"
+    Padding="32">
+                DEPTH 5
+            </materialDesign:Card>
+        </DockPanel>
     </Grid>
 </UserControl>
