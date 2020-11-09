@@ -13,8 +13,11 @@
     </UserControl.DataContext>
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="BlockTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
             <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
-            <DataTemplate DataType="{x:Type local:BlockTextureInfo}">
+            <!--<DataTemplate DataType="{x:Type local:BlockTextureInfo}">
                 <wpf:Card Width="120" Height="120" Margin="6">
                     <Grid>
                         <wpf:PackIcon Width="120" Height="120" Kind="Cancel"
@@ -34,7 +37,7 @@
                         </Border>
                     </Grid>
                 </wpf:Card>
-            </DataTemplate>
+            </DataTemplate>-->
             <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
             </Storyboard>
@@ -63,28 +66,19 @@
                         <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard FillBehavior="HoldEnd">
+                                    <Storyboard>
                                         <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="{StaticResource Primary200}" To="#f44336"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
-                                    <Storyboard FillBehavior="HoldEnd">
+                                    <Storyboard>
                                         <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard FillBehavior="HoldEnd">
-                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Button.Style>
