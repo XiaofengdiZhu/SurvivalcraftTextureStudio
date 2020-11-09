@@ -63,21 +63,28 @@
                         <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard>
+                                    <Storyboard FillBehavior="HoldEnd">
                                         <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="{StaticResource Primary200}" To="#f44336"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="HoldEnd">
+                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
+                        <!--<DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard>
+                                    <Storyboard FillBehavior="HoldEnd">
                                         <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
-                        </DataTrigger>
+                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Button.Style>
