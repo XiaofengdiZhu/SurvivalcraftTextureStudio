@@ -35,6 +35,9 @@
                     </Grid>
                 </wpf:Card>
             </DataTemplate>
+            <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
+                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
+            </Storyboard>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -52,10 +55,32 @@
                 VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
                 wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
                 IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}"
-                Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                 ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
-            <!--  simple example of toggling/animating pack icon with a data trigger  -->
+            <Button.Style>
+                <Style BasedOn="{StaticResource MaterialDesignFloatingActionLightButton}" TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="{StaticResource Primary200}" To="#f44336"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
             <wpf:PackIcon Width="24" Height="24">
                 <wpf:PackIcon.Style>
                     <Style BasedOn="{StaticResource {x:Type wpf:PackIcon}}" TargetType="wpf:PackIcon">
@@ -64,11 +89,20 @@
                             <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
                                 <Setter Property="Kind" Value="Check"/>
                                 <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
+                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
+                                <Setter Property="Kind" Value="Close"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
+                                <Setter Property="Kind" Value="Download"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
                                 </DataTrigger.EnterActions>
                             </DataTrigger>
                         </Style.Triggers>

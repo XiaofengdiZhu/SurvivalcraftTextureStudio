@@ -96,6 +96,34 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
+        public bool _IsExportCacceled = false;
+
+        public bool IsExportCanceled
+        {
+            get { return _IsExportCacceled; }
+            set
+            {
+                if (_IsExportCacceled != value)
+                {
+                    _IsExportCacceled = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsExportCanceled"));
+                }
+            }
+        }
+        public bool _ExportButtonRecover = false;
+
+        public bool ExportButtonRecover
+        {
+            get { return _ExportButtonRecover; }
+            set
+            {
+                if (_ExportButtonRecover != value)
+                {
+                    _ExportButtonRecover = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("ExportButtonRecover"));
+                }
+            }
+        }
         public void ChangeImage(BlockTextureInfo block)
         {
             if (IsOperatingBlocksTexture)
@@ -136,6 +164,8 @@ namespace SurvivalcraftTextureStudio
             }
             IsOperatingBlocksTexture = true;
             IsExportComplete = false;
+            IsExportCanceled = false;
+            ExportButtonRecover = false;
             Thread ExportThread = new Thread(() =>
             {
                 Bitmap tempBitmap = new Bitmap(NowPerBlockSize * 16, NowPerBlockSize * 16, NowPixelFormat);
@@ -166,7 +196,18 @@ namespace SurvivalcraftTextureStudio
                     tempBitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
                     IsExportComplete = true;
                 }
+                else
+                {
+                    IsExportCanceled = true;
+                }
                 IsOperatingBlocksTexture = false;
+                Thread.Sleep(3000);
+                if (!IsOperatingBlocksTexture)
+                {
+                    IsExportComplete = false;
+                    IsExportCanceled = false;
+                    ExportButtonRecover = true;
+                }
             });
             ExportThread.SetApartmentState(ApartmentState.STA);
             ExportThread.Start();
