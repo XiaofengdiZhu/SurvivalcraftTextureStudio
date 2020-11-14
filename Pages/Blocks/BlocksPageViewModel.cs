@@ -14,7 +14,7 @@ namespace SurvivalcraftTextureStudio
     public class BlocksPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
+        public static BlocksPageViewModel BPVM;
         public int NowPerBlockSize = 32;
         public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
 
@@ -32,9 +32,23 @@ namespace SurvivalcraftTextureStudio
                     BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
                 }
             }
+            BPVM = this;
             InitiateCommands();
         }
-
+        public int _BlockIndexOnFocus;
+        public int BlockIndexOnFocus
+        {
+            get { return _BlockIndexOnFocus; }
+            set
+            {
+                foreach(BlockTextureInfo block in BlockTexturesDictionary.Values)
+                {
+                    block.IsFocused = false;
+                }
+                _BlockIndexOnFocus = value;
+                if(value>-1)BlockTexturesDictionary[value].IsFocused = true;
+            }
+        }
         public Dictionary<int, BlockTextureInfo> _BlockTexturesDictionary;
 
         public Dictionary<int, BlockTextureInfo> BlockTexturesDictionary

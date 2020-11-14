@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using Prism.Commands;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace SurvivalcraftTextureStudio
@@ -12,6 +16,21 @@ namespace SurvivalcraftTextureStudio
             Name = name;
             Description = description;
             Rotation = rotation;
+            GotFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
+            {
+                if(!IsFocused&& Index != BlocksPageViewModel.BPVM.BlockIndexOnFocus)
+                {
+                    BlocksPageViewModel.BPVM.BlockIndexOnFocus = Index;
+                    ((System.Windows.Controls.Border)p.Sender).Focus();
+                }
+            }, (p) => { return true; });
+            LostFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
+            {
+                if (((RoutedEventArgs)p.EventArgs).RoutedEvent.Name=="MouseLeave")
+                {
+                    BlocksPageViewModel.BPVM.BlockIndexOnFocus = -1;
+                }
+            }, (p) => { return true; });
         }
 
         public int _Index;
@@ -108,6 +127,24 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+
+        public bool _IsFocused;
+
+        public bool IsFocused
+        {
+            get { return _IsFocused; }
+            set
+            {
+                if (_IsFocused != value)
+                {
+                    _IsFocused = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsFocused"));
+                }
+            }
+        }
+
+        public ICommand GotFucusCommand { get; private set; }
+        public ICommand LostFucusCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
     }

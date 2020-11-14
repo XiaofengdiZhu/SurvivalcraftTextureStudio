@@ -43,7 +43,7 @@
             </Storyboard>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <ScrollViewer Padding="16">
             <ItemsControl x:Name="wrap" Grid.Row="1" Margin="0,12,0,0"
                           ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}">
@@ -57,7 +57,6 @@
         <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
                 wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
-                IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}"
                 ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
             <Button.Style>
@@ -67,14 +66,19 @@
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="{StaticResource Primary200}" To="#f44336"/>
+                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                        From="{StaticResource Primary200}"
+                                                        To="#f44336" Duration="0:0:0.4"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:0.4" From="#f44336" To="{StaticResource Primary200}"/>
+                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                        From="#f44336"
+                                                        To="{StaticResource Primary200}"
+                                                        Duration="0:0:0.4"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
