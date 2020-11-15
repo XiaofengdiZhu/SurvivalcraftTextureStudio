@@ -7,15 +7,63 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
+    <Duration x:Key="AnimationDuration">0:0:0.2</Duration>
+    <Storyboard x:Key="BlockButtonAppearStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1"
+                         Duration="{StaticResource AnimationDuration}">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0" To="1"
+                         Duration="{StaticResource AnimationDuration}">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="BlockButtonDisappearStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0"
+                         Duration="{StaticResource AnimationDuration}">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="0"
+                         Duration="{StaticResource AnimationDuration}">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
     <Style x:Key="BlockButton" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" TargetType="Button">
         <Setter Property="Margin" Value="4"/>
         <Setter Property="ToolTipService.Placement" Value="Right"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform CenterX="20" CenterY="20"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsFocused}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource BlockButtonAppearStoryboard}"/>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource BlockButtonDisappearStoryboard}"/>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
     <DataTemplate DataType="{x:Type local:BlockTextureInfo}">
         <StackPanel Margin="8">
             <Border Width="120" Height="120" CornerRadius="12"
                     Effect="{StaticResource MaterialDesignShadowDepth2}"
-                    Focusable="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    FocusVisualStyle="{x:Null}"
+                    Focusable="True" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    ToolTip="{Binding Description}"
+                    ToolTipService.InitialShowDelay="1000" ToolTipService.Placement="MousePoint">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="GotKeyboardFocus">
                         <local:ExInvokeCommandAction Command="{Binding GotFucusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Border}}}"/>
@@ -39,55 +87,41 @@
                 <Border.Background>
                     <ImageBrush ImageSource="{Binding Texture, IsAsync=True}" Stretch="UniformToFill"/>
                 </Border.Background>
-                <Grid>
-                    <Border Background="#60000000" CornerRadius="12" Opacity="0">
-                        <Border.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.4"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"
-                               Orientation="Vertical">
-                        <WrapPanel.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.4"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </WrapPanel.Style>
+                <Grid Opacity="0">
+                    <Grid.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1"
+                                                                 Duration="{StaticResource AnimationDuration}">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0"
+                                                                 Duration="{StaticResource AnimationDuration}">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Border Background="#80000000" CornerRadius="12"/>
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                         <Button Style="{StaticResource BlockButton}" ToolTip="预览">
                             <md:PackIcon Width="20" Height="20" Kind="FileFind"/>
                         </Button>

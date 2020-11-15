@@ -10,7 +10,7 @@ namespace SurvivalcraftTextureStudio
 {
     public class BlockTextureInfo : INotifyPropertyChanged
     {
-        public BlockTextureInfo(int index, string name = "undefined", string description = "", float rotation = 0)
+        public BlockTextureInfo(int index, string name = "undefined", string description = "undefined too", float rotation = 0)
         {
             Index = index;
             Name = name;

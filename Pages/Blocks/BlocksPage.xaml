@@ -17,27 +17,6 @@
                 <ResourceDictionary Source="BlockTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
-            <!--<DataTemplate DataType="{x:Type local:BlockTextureInfo}">
-                <wpf:Card Width="120" Height="120" Margin="6">
-                    <Grid>
-                        <wpf:PackIcon Width="120" Height="120" Kind="Cancel"
-                                      Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
-                        <Image Width="120" Height="120" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                               RenderOptions.CachingHint="Cache"
-                               Source="{Binding Texture, IsAsync=True}"/>
-                        <Border VerticalAlignment="Bottom" Background="#4C000000">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,10,0" Text="{Binding Index}"/>
-                                <TextBlock Margin="0,0,10,0" Text="{Binding Name}"/>
-                                <Button Content="点我"
-                                        IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.ChangeImageCommand, Mode=OneTime}"
-                                        CommandParameter="{Binding}"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </wpf:Card>
-            </DataTemplate>-->
             <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
             </Storyboard>
