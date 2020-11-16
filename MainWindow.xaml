@@ -76,7 +76,7 @@
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
-                                                                 To="1" Duration="0:0:0.15"/>
+                                                                 To="1" Duration="0:0:0.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -86,7 +86,7 @@
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
-                                                                 To="0" Duration="0:0:0.15"/>
+                                                                 To="0" Duration="0:0:0.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -120,11 +120,6 @@
                                                 </VisualTransition.GeneratedEasingFunction>
                                             </VisualTransition>
                                         </VisualStateGroup.Transitions>
-                                        <!--<VisualState Name="MouseOver">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </VisualState>-->
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                             </Border>
@@ -143,8 +138,9 @@
                                       IsChecked="{Binding ElementName=NarrowDrawerToggleButton, Path=IsChecked, Mode=TwoWay}"
                                       Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <StackPanel Margin="14,4">
-                                <TextBlock lan:Xaml.Key="SoftwareName"/>
+                            <Image Width="40" Height="40" VerticalAlignment="Center" Source="favicon.ico"/>
+                            <StackPanel Margin="10,4" HorizontalAlignment="Stretch">
+                                <TextBlock Width="128" lan:Xaml.Key="SoftwareName" TextWrapping="Wrap"/>
                                 <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}" Text="{Binding VersionText}"/>
                             </StackPanel>
                         </StackPanel>
@@ -164,14 +160,15 @@
             </materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel>
                 <materialDesign:Card x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch"
-                                          materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
-                                          Background="{DynamicResource MaterialDesignCardBackground}"
-                                          DockPanel.Dock="Left" UniformCornerRadius="0">
+                                     materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
+                                     Background="{DynamicResource MaterialDesignCardBackground}"
+                                     DockPanel.Dock="Left" UniformCornerRadius="0">
                     <StackPanel Margin="16,0,16,16">
                         <Border Height="24" Margin="-16,0" Background="{DynamicResource MaterialDesignChipBackground}"/>
-                        <StackPanel Margin="0,12,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
-                            <StackPanel Margin="14,4">
-                                <TextBlock lan:Xaml.Key="SoftwareName"/>
+                        <StackPanel Margin="0,12,0,0" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <Image Width="40" Height="40" VerticalAlignment="Center" Source="favicon.ico"/>
+                            <StackPanel Margin="10,4" HorizontalAlignment="Stretch">
+                                <TextBlock Width="128" lan:Xaml.Key="SoftwareName" TextWrapping="Wrap"/>
                                 <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}" Text="{Binding VersionText}"/>
                             </StackPanel>
                         </StackPanel>
@@ -215,8 +212,11 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          materialDesign:ShadowAssist.ShadowEdges="Bottom" DockPanel.Dock="Top" UniformCornerRadius="0"
-                                          Background="{DynamicResource PrimaryHueMidBrush}" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                     materialDesign:ShadowAssist.ShadowEdges="Bottom"
+                                     Background="{DynamicResource PrimaryHueMidBrush}"
+                                     DockPanel.Dock="Top"
+                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                     UniformCornerRadius="0">
                     <DockPanel>
                         <ToggleButton x:Name="WideDrawerToggleButton" IsChecked="True" Style="{StaticResource MaterialDesignHamburgerToggleButton}">
                             <ToggleButton.Triggers>
@@ -259,10 +259,9 @@
                                 materialDesign:RippleAssist.IsCentered="True"
                                 materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
                                 BorderBrush="Transparent" Cursor="Hand" DockPanel.Dock="Right"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                 Style="{StaticResource MaterialDesignFloatingActionButton}">
-                            <materialDesign:PackIcon Width="24" Height="24"
-                                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                                     Kind="Account"/>
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="Account"/>
                         </Button>
                         <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                    lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"
