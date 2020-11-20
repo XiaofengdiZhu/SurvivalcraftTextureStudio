@@ -39,7 +39,7 @@
                 ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
             <Button.Style>
-                <Style BasedOn="{StaticResource MaterialDesignFloatingActionLightButton}" TargetType="Button">
+                <Style BasedOn="{StaticResource MaterialDesignFloatingActionAccentButton}" TargetType="Button">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
                             <DataTrigger.EnterActions>

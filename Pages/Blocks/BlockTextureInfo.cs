@@ -1,4 +1,4 @@
-﻿using Prism.Commands;
+using Prism.Commands;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;

@@ -211,13 +211,13 @@
                         </ListBox>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <materialDesign:Card Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                      materialDesign:ShadowAssist.ShadowEdges="Bottom"
                                      Background="{DynamicResource PrimaryHueMidBrush}"
                                      DockPanel.Dock="Top"
                                      Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                      UniformCornerRadius="0">
-                    <DockPanel>
+                    <DockPanel Margin="16">
                         <ToggleButton x:Name="WideDrawerToggleButton" IsChecked="True" Style="{StaticResource MaterialDesignHamburgerToggleButton}">
                             <ToggleButton.Triggers>
                                 <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -260,8 +260,9 @@
                                 materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
                                 BorderBrush="Transparent" Cursor="Hand" DockPanel.Dock="Right"
                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                Style="{StaticResource MaterialDesignFloatingActionButton}">
-                            <materialDesign:PackIcon Width="24" Height="24" Kind="Account"/>
+                                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                ToolTip="打开材质文件">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="FolderOpen"/>
                         </Button>
                         <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                    lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"

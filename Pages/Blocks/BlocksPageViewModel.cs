@@ -20,20 +20,25 @@ namespace SurvivalcraftTextureStudio
 
         public BlocksPageViewModel()
         {
-            BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
-            Bitmap OrigianlBlocksTexture = new Bitmap(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/OriginalBlocksTextureFrom2.2.png", UriKind.RelativeOrAbsolute)).Stream);
-            NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
-            NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
-            for (int i = 0; i < 16; i++)
+            if (BlockTexturesDictionary == null)
             {
-                for (int j = 0; j < 16; j++)
+                BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
+                Bitmap OrigianlBlocksTexture = new Bitmap(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/OriginalBlocksTextureFrom2.2.png", UriKind.RelativeOrAbsolute)).Stream);
+                NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
+                NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
+                for (int i = 0; i < 16; i++)
                 {
-                    Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
-                    BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
+                    for (int j = 0; j < 16; j++)
+                    {
+                        Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
+                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
+                    }
                 }
+                System.Diagnostics.Debug.WriteLine("材质加载完成");
             }
             BPVM = this;
             InitiateCommands();
+            System.Diagnostics.Debug.WriteLine("BlocksPageViewModel加载完成");
         }
         public int _BlockIndexOnFocus;
         public int BlockIndexOnFocus
