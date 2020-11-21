@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:SurvivalcraftTextureStudio"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
@@ -23,16 +24,16 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
-        <ScrollViewer Padding="16">
-            <ItemsControl x:Name="wrap" Grid.Row="1" Margin="0,12,0,0"
-                          ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+        <wpftk:VirtualizingItemsControl x:Name="wrap"
+                                        ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
+                                        VirtualizingPanel.ScrollUnit="Pixel"
+                                        VirtualizingPanel.VirtualizationMode="Standard">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <wpftk:VirtualizingWrapPanel Margin="0,16" SpacingMode="Uniform"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </wpftk:VirtualizingItemsControl>
         <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
                 wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"

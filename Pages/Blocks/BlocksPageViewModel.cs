@@ -31,7 +31,7 @@ namespace SurvivalcraftTextureStudio
                     for (int j = 0; j < 16; j++)
                     {
                         Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
-                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { Texture = ImageHelper.Bitmap2BitmapImage(tempBitmap), BitmapCache = tempBitmap });
+                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) {BitmapCache = tempBitmap });
                     }
                 }
                 System.Diagnostics.Debug.WriteLine("材质加载完成");
@@ -164,9 +164,9 @@ namespace SurvivalcraftTextureStudio
                     lock (block)
                     {
                         Bitmap bitmap = ImageHelper.ResizeBitmapByImageSharp(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), NowPerBlockSize, NowPerBlockSize);
-                        BitmapImage image = ImageHelper.Bitmap2BitmapImage(bitmap);
+                        //BitmapImage image = ImageHelper.Bitmap2BitmapImage(bitmap);
                         block.BitmapCache = bitmap;
-                        block.Texture = image;
+                        //block.Texture = image;
                     }
                 }
                 IsOperatingBlocksTexture = false;

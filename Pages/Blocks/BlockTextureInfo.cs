@@ -97,15 +97,7 @@ namespace SurvivalcraftTextureStudio
 
         public BitmapImage Texture
         {
-            get { return _Texture; }
-            set
-            {
-                if (_Texture != value)
-                {
-                    _Texture = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Texture"));
-                }
-            }
+            get { return ImageHelper.Bitmap2BitmapImage(BitmapCache); }
         }
 
         public bool IsTextureExist

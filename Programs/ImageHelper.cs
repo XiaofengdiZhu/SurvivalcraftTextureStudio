@@ -68,15 +68,18 @@ namespace SurvivalcraftTextureStudio
 
         public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
         {
-            MemoryStream memory = new MemoryStream();
-            bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-            memory.Position = 0;
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            return bitmapImage;
+            lock (bitmap)
+            {
+                MemoryStream memory = new MemoryStream();
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                return bitmapImage;
+            }
         }
 
         public enum ScaleMode
