@@ -116,6 +116,7 @@ namespace SurvivalcraftTextureStudio
                 {
                     _BitmapCache = value;
                     PropertyChanged(this, new PropertyChangedEventArgs("BitmapCache"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Texture"));
                 }
             }
         }

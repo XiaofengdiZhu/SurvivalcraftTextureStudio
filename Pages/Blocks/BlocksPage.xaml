@@ -26,8 +26,9 @@
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <wpftk:VirtualizingItemsControl x:Name="wrap"
                                         ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
-                                        VirtualizingPanel.ScrollUnit="Pixel"
-                                        VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.CacheLength="24,24" VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                        VirtualizingPanel.VirtualizationMode="Recycling">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <wpftk:VirtualizingWrapPanel Margin="0,16" SpacingMode="Uniform"/>
