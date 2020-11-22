@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SurvivalcraftTextureStudio"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -36,8 +36,8 @@
             </ItemsControl.ItemsPanel>
         </wpftk:VirtualizingItemsControl>
         <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
-                VerticalAlignment="Bottom" wpf:ButtonProgressAssist.IsIndeterminate="True"
-                wpf:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
+                VerticalAlignment="Bottom" md:ButtonProgressAssist.IsIndeterminate="True"
+                md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
                 ToolTip="导出"
                 Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
             <Button.Style>
@@ -67,9 +67,9 @@
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            <wpf:PackIcon Width="24" Height="24">
-                <wpf:PackIcon.Style>
-                    <Style BasedOn="{StaticResource {x:Type wpf:PackIcon}}" TargetType="wpf:PackIcon">
+            <md:PackIcon Width="24" Height="24">
+                <md:PackIcon.Style>
+                    <Style BasedOn="{StaticResource {x:Type md:PackIcon}}" TargetType="md:PackIcon">
                         <Setter Property="Kind" Value="Download"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
@@ -93,8 +93,8 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </wpf:PackIcon.Style>
-            </wpf:PackIcon>
+                </md:PackIcon.Style>
+            </md:PackIcon>
         </Button>
     </Grid>
 </UserControl>
