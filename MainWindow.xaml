@@ -12,13 +12,11 @@
         Height="450"
         MinWidth="800"
         MinHeight="600"
-        Activated="Window_Activated"
         AllowsTransparency="False"
         Background="{DynamicResource MaterialDesignPaper}"
         Closing="MainWindow_CLosing"
         FontFamily="Microsoft YaHei"
         FontSize="14"
-        Loaded="Window_Loaded"
         SizeChanged="Window_SizeChanged"
         StateChanged="Window_StateChanged"
         TextElement.FontWeight="Regular"
@@ -44,19 +42,6 @@
             <local:WideDrawerConverter x:Key="wideDrawerConverter"/>
             <local:RippleBrushConverter x:Key="rippleBrushConverter"/>
             <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
-            <ContextMenu x:Key="NotifyIconMenu" LostFocus="ContextMenu_LostFocus" StaysOpen="False">
-                <MenuItem Name="NotifyIconMenuOpen" Click="NotifyIconMenuOpen_Click" Header="打开">
-                    <MenuItem.Icon>
-                        <Image Source="favicon.ico"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Name="NotifyIconMenuExit" Click="NotifyIconMenuExit_Click" Header="退出">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ExitToApp"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </ContextMenu>
             <Style x:Key="WindowControlButton" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkForegroundBrush}"/>
                 <Setter Property="Width" Value="40"/>
@@ -173,9 +158,7 @@
                             </StackPanel>
                         </StackPanel>
                         <Separator Margin="12,20" Style="{StaticResource MaterialDesignSeparator}"/>
-                        <ListBox x:Name="PagesListBox"
-                                 ItemsSource="{Binding Pages}"
-                                 SelectedIndex="0" SelectionChanged="PagesListBox_SelectionChanged">
+                        <ListBox x:Name="PagesListBox" ItemsSource="{Binding Pages}" SelectedIndex="0">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="domain:DemoItem">
                                     <StackPanel IsEnabled="False" Orientation="Horizontal">
@@ -254,11 +237,12 @@
                                 <Button Click="MenuPopupButton_OnClick" Content="Goodbye"/>
                             </StackPanel>
                         </materialDesign:PopupBox>
-                        <Button Width="72" Height="72" Margin="0,-16"
+                        <Button x:Name="ImportBlocksTextureButton" Width="72" Height="72" Margin="0,-16"
                                 materialDesign:RippleAssist.Feedback="{DynamicResource MaterialDesignFlatButtonRipple}"
                                 materialDesign:RippleAssist.IsCentered="True"
                                 materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
-                                BorderBrush="Transparent" Cursor="Hand" DockPanel.Dock="Right"
+                                BorderBrush="Transparent" Click="ImportBlocksTextureButton_Click" Cursor="Hand"
+                                DockPanel.Dock="Right"
                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                 Style="{StaticResource MaterialDesignFloatingActionButton}"
                                 ToolTip="打开材质文件">

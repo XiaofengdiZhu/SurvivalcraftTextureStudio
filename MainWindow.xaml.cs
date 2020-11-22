@@ -32,7 +32,6 @@ namespace SurvivalcraftTextureStudio
             DH = this.MainWindowOutest;
             CF = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             LoadWindowSettings();
-            //NotifyIcon.Initiate();
             DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue);
             Snackbar = MainSnackbar;
         }
@@ -46,8 +45,6 @@ namespace SurvivalcraftTextureStudio
             }
             string path = System.IO.Path.Combine(Environment.CurrentDirectory, "Languages");
             LanService.Init(new JsonDB(path), true, language);
-            /*string str = LanService.Get("Title").Result;
-            Debug.WriteLine(str);*/
         }
 
         public void LoadWindowSettings()
@@ -80,7 +77,6 @@ namespace SurvivalcraftTextureStudio
             PagesListBox.SelectedIndex = int.Parse(Config("BootPageIndex"));
             if (bool.Parse(Config("isDark")))
             {
-                //new PaletteHelper().SetLightDark(true);
                 ModifyTheme(theme => theme.SetBaseTheme(Theme.Dark));
             }
             string originalPrimaryColor = "Indigo";
@@ -88,13 +84,11 @@ namespace SurvivalcraftTextureStudio
             string primaryColor = Config("PrimaryColor");
             if (primaryColor != originalPrimaryColor)
             {
-                //new PaletteHelper().ReplacePrimaryColor(primaryColor);
                 ModifyTheme(theme => theme.SetPrimaryColor((Color)ColorConverter.ConvertFromString(primaryColor)));
             }
             string accentColor = Config("AccentColor");
             if (accentColor != originalAccentColor)
             {
-                //new PaletteHelper().ReplaceAccentColor(Config("AccentColor"));
                 ModifyTheme(theme => theme.SetSecondaryColor((Color)ColorConverter.ConvertFromString(accentColor)));
             }
         }
@@ -103,9 +97,7 @@ namespace SurvivalcraftTextureStudio
         {
             PaletteHelper paletteHelper = new PaletteHelper();
             ITheme theme = paletteHelper.GetTheme();
-
             modificationAction?.Invoke(theme);
-
             paletteHelper.SetTheme(theme);
         }
 
@@ -118,7 +110,6 @@ namespace SurvivalcraftTextureStudio
         public void TrueClose()
         {
             SaveWindowSettings();
-            //NotifyIcon.notifyIcon.Visible = false;
             Application.Current.Shutdown();
         }
 
@@ -190,10 +181,6 @@ namespace SurvivalcraftTextureStudio
             scrollViewer.RaiseEvent(eventArg);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void NotifyIconMenuExit_Click(object sender, RoutedEventArgs e)
         {
             TrueClose();
@@ -201,7 +188,6 @@ namespace SurvivalcraftTextureStudio
 
         public void RecoverWindow()
         {
-            //Show();
             ShowInTaskbar = true;
             WindowState = WindowStateBeforeHided;
             Activate();
@@ -221,13 +207,7 @@ namespace SurvivalcraftTextureStudio
                 MainWindowOutest.Margin = WindowState == WindowState.Maximized ? new Thickness(8) : new Thickness(0);
                 MaximizeWindowButton.Tag = WindowState == WindowState.Normal ? "Max" : "Res";
                 WindowControlButtonContent.Kind = WindowState == WindowState.Normal ? PackIconKind.WindowMaximize : PackIconKind.WindowRestore;
-                DateTime now = DateTime.Now;
             }
-            //NI.ShowNotification(WindowState.ToString());
-        }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -273,17 +253,9 @@ namespace SurvivalcraftTextureStudio
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void ContextMenu_LostFocus(object sender, RoutedEventArgs e)
+        private void ImportBlocksTextureButton_Click(object sender, RoutedEventArgs e)
         {
-            //NotifyIcon.NotifyIconMenu.IsOpen = false;
-        }
-
-        public static PageIndex? SelectedPageIndex;
-
-        private void PagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectedPageIndex = PagesListBox.SelectedIndex == -1 ? null : (PageIndex?)PagesListBox.SelectedIndex;
-            DateTime now = DateTime.Now;
+            BlocksPageViewModel.BPVM.ImportBlocksTexture();
         }
     }
 }

@@ -25,10 +25,4 @@ namespace SurvivalcraftTextureStudio
         public Page[] Pages { get; }
         public string VersionText { get; set; }
     }
-
-    public enum PageIndex
-    {
-        Home,
-        PaletteSelector,
-    }
 }
