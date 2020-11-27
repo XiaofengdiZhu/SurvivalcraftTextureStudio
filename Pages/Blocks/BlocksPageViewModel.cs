@@ -7,7 +7,6 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -23,7 +22,7 @@ namespace SurvivalcraftTextureStudio
             if (BlockTexturesDictionary == null)
             {
                 BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
-                Bitmap OrigianlBlocksTexture = new Bitmap(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/OriginalBlocksTextureFrom2.2.png", UriKind.RelativeOrAbsolute)).Stream);
+                Bitmap OrigianlBlocksTexture = Properties.Resources.OriginalBlocksTextureFrom2_2;
                 NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
                 NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
                 for (int i = 0; i < 16; i++)
@@ -152,14 +151,14 @@ namespace SurvivalcraftTextureStudio
             IsOperatingBlocksTexture = true;
             Thread ImportThread = new Thread(() =>
             {
-                System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
                 openFileDialog.Title = "选择图片";
                 openFileDialog.Filter = "png文件|*.png|所有文件|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.Multiselect = false;
                 openFileDialog.DefaultExt = "png";
-                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialog.ShowDialog().Value)
                 {
                     Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
                     Bitmap bitmap = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
@@ -194,14 +193,14 @@ namespace SurvivalcraftTextureStudio
             IsOperatingBlocksTexture = true;
             Thread ChangeImageThread = new Thread(() =>
             {
-                System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
                 openFileDialog.Title = "选择图片";
                 openFileDialog.Filter = "png文件|*.png|所有文件|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.Multiselect = false;
                 openFileDialog.DefaultExt = "png";
-                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialog.ShowDialog().Value)
                 {
                     lock (block)
                     {
@@ -240,7 +239,7 @@ namespace SurvivalcraftTextureStudio
                         }
                     }
                 }
-                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog()
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog()
                 {
                     Title = "选择保存位置",
                     Filter = "png文件|*.png|所有文件|*.*",
@@ -249,7 +248,7 @@ namespace SurvivalcraftTextureStudio
                     RestoreDirectory = true,
                     DefaultExt = "png"
                 };
-                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (saveFileDialog.ShowDialog().Value)
                 {
                     tempBitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
                     IsExportComplete = true;
