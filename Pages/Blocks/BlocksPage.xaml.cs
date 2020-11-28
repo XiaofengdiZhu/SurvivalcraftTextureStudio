@@ -8,6 +8,7 @@ namespace SurvivalcraftTextureStudio
     public partial class BlocksPage : UserControl
     {
         public static BlocksPage BP;
+
         public BlocksPage()
         {
             BP = this;

@@ -1,6 +1,5 @@
 using Prism.Commands;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
@@ -18,7 +17,7 @@ namespace SurvivalcraftTextureStudio
             Rotation = rotation;
             GotFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
             {
-                if(!IsFocused&& Index != BlocksPageViewModel.BPVM.BlockIndexOnFocus)
+                if (!IsFocused && Index != BlocksPageViewModel.BPVM.BlockIndexOnFocus)
                 {
                     BlocksPageViewModel.BPVM.BlockIndexOnFocus = Index;
                     ((System.Windows.Controls.Border)p.Sender).Focus();
@@ -26,7 +25,7 @@ namespace SurvivalcraftTextureStudio
             }, (p) => { return true; });
             LostFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
             {
-                if (((RoutedEventArgs)p.EventArgs).RoutedEvent.Name=="MouseLeave")
+                if (((RoutedEventArgs)p.EventArgs).RoutedEvent.Name == "MouseLeave")
                 {
                     BlocksPageViewModel.BPVM.BlockIndexOnFocus = -1;
                 }

@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Windows;
-
-namespace SurvivalcraftTextureStudio
+﻿namespace SurvivalcraftTextureStudio
 {
     public partial class Home : System.Windows.Controls.UserControl
     {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 
 namespace SurvivalcraftTextureStudio
@@ -13,6 +11,7 @@ namespace SurvivalcraftTextureStudio
     public class BlocksPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
         public static BlocksPageViewModel BPVM;
         public int NowPerBlockSize = 32;
         public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
@@ -30,7 +29,7 @@ namespace SurvivalcraftTextureStudio
                     for (int j = 0; j < 16; j++)
                     {
                         Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
-                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) {BitmapCache = tempBitmap });
+                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { BitmapCache = tempBitmap });
                     }
                 }
                 System.Diagnostics.Debug.WriteLine("材质加载完成");
@@ -39,20 +38,23 @@ namespace SurvivalcraftTextureStudio
             InitiateCommands();
             System.Diagnostics.Debug.WriteLine("BlocksPageViewModel加载完成");
         }
+
         public int _BlockIndexOnFocus;
+
         public int BlockIndexOnFocus
         {
             get { return _BlockIndexOnFocus; }
             set
             {
-                foreach(BlockTextureInfo block in BlockTexturesDictionary.Values)
+                foreach (BlockTextureInfo block in BlockTexturesDictionary.Values)
                 {
                     block.IsFocused = false;
                 }
                 _BlockIndexOnFocus = value;
-                if(value>-1)BlockTexturesDictionary[value].IsFocused = true;
+                if (value > -1) BlockTexturesDictionary[value].IsFocused = true;
             }
         }
+
         public Dictionary<int, BlockTextureInfo> _BlockTexturesDictionary;
 
         public Dictionary<int, BlockTextureInfo> BlockTexturesDictionary
@@ -128,6 +130,7 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+
         public bool _ExportButtonRecover = false;
 
         public bool ExportButtonRecover
@@ -142,6 +145,7 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+
         public void ImportBlocksTexture()
         {
             if (IsOperatingBlocksTexture)
@@ -184,6 +188,7 @@ namespace SurvivalcraftTextureStudio
             ImportThread.SetApartmentState(ApartmentState.STA);
             ImportThread.Start();
         }
+
         public void ChangeImage(BlockTextureInfo block)
         {
             if (IsOperatingBlocksTexture)
@@ -230,8 +235,8 @@ namespace SurvivalcraftTextureStudio
                 {
                     using (Graphics g = Graphics.FromImage(tempBitmap))
                     {
-                    for (int i = 0; i < 16; i++)
-                    {
+                        for (int i = 0; i < 16; i++)
+                        {
                             for (int j = 0; j < 16; j++)
                             {
                                 g.DrawImage(BlockTexturesDictionary[i * 16 + j].BitmapCache, j * NowPerBlockSize, i * NowPerBlockSize);

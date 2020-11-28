@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <StartupObject>SurvivalcraftTextureStudio.App</StartupObject>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,6 +60,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Widgets\" />
   </ItemGroup>
 
 </Project>
