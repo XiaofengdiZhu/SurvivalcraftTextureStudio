@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Input;
 
@@ -24,19 +26,101 @@ namespace SurvivalcraftTextureStudio
                 Bitmap OrigianlBlocksTexture = Properties.Resources.OriginalBlocksTextureFrom2_2;
                 NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
                 NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
-                for (int i = 0; i < 16; i++)
+                int[] baseInformationLocation = new int[3];
+                Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();
+                bool FirstLineReaded = false;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                foreach (string block in File.ReadAllText(System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv", Encoding.UTF8).Split('\n'))
                 {
-                    for (int j = 0; j < 16; j++)
+                    if (FirstLineReaded)
                     {
-                        Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, i * 16 + j, NowPerBlockSize);
-                        BlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { BitmapCache = tempBitmap });
+                        string[] str = block.Split('\t');
+                        if (str.Length > 3 && str.Length % 2 == 1)
+                        {
+                            Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
+                            Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
+                            foreach (var a in otherInformationLocation)
+                            {
+                                name.Add(a.Key, str[a.Value[0]]);
+                                description.Add(a.Key, str[a.Value[1]]);
+                            }
+                            int index = int.Parse(str[baseInformationLocation[0]]);
+                            BlockTexturesDictionary.Add(index, new BlockTextureInfo(index)
+                            {
+                                _Name = name,
+                                _Description = description,
+                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, index, NowPerBlockSize)
+                            });
+                        }
+                    }
+                    else
+                    {
+                        FirstLineReaded = true;
+                        int i = 0;
+                        foreach (string title in block.Split('\t'))
+                        {
+                            if (title == "Index")
+                            {
+                                baseInformationLocation[0] = i;
+                            }
+                            else if (title == "IsNull")
+                            {
+                                baseInformationLocation[1] = i;
+                            }
+                            else if (title == "IsMore")
+                            {
+                                baseInformationLocation[2] = i;
+                            }
+                            else
+                            {
+                                string[] str = title.Split('.');
+                                if (str.Length == 2)
+                                {
+                                    try
+                                    {
+                                        CultureInfo culture = CultureInfo.GetCultureInfo(str[1]);
+                                        if (!otherInformationLocation.ContainsKey(culture))
+                                        {
+                                            switch (str[0])
+                                            {
+                                                case "Name": otherInformationLocation.Add(culture, new int[2] { i, -1 }); break;
+                                                case "Description": otherInformationLocation.Add(culture, new int[2] { -1, i }); break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            switch (str[0])
+                                            {
+                                                case "Name": otherInformationLocation[culture][0] = i; break;
+                                                case "Description": otherInformationLocation[culture][1] = i; break;
+                                            }
+                                        }
+                                    }
+                                    catch (System.Exception) { }
+                                }
+                            }
+                            i++;
+                        }
+                        foreach (KeyValuePair<CultureInfo, int[]> locations in otherInformationLocation)
+                        {
+                            if (locations.Value[0] == -1 || locations.Value[1] == -1)
+                            {
+                                otherInformationLocation.Remove(locations.Key);
+                            }
+                        }
                     }
                 }
-                System.Diagnostics.Debug.WriteLine("材质加载完成");
             }
+            System.GC.Collect();
             BPVM = this;
             InitiateCommands();
-            System.Diagnostics.Debug.WriteLine("BlocksPageViewModel加载完成");
+        }
+
+        public class Titles
+        {
+            public int Index;
+            public bool IsNull;
+            public bool IsMore;
         }
 
         public int _BlockIndexOnFocus;

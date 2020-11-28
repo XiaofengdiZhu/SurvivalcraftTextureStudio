@@ -1,0 +1,254 @@
+Index	IsNull	IsMore	Name.zh-CN	Description.zh-CN	Name.en	Description.en
+0			草地顶部		Top of Grass Dirt	
+1		TRUE	花岗岩	花岗岩、花岗岩台阶、墓碑、穿墙花岗岩	Granite	Granite, Stone Stairs, Gravestone, Wire Through Stone
+2			泥土	泥土、耕地	Dirt	Dirt, Soil
+3			草地侧面		Suround of Grass Dirt	
+4		TRUE	木板	木板、木门、小船、炸药桶	Planks	Planks, Wooden Door, Boat, Gunpowder Keg
+5			石灰岩		Limestone	
+6			玄武岩	玄武岩及其台阶、板、栅栏	Basalt	Basalt and its Stairs, Slab, Fence
+7			大理石	大理石及其台阶、板	Marble	Marble and its Stairs, Slab
+8			粘土		Clay	
+9	TRUE					
+10			常春藤		Ivy	
+11			花苗		Flower Seedling	
+12			红花		Red Flower	
+13			紫花		Purple Flower	
+14			白花		White Flower	
+15		TRUE	硝石	硝石、牛奶、粘土、面团	Saltpeter Chunk	Saltpeter Chunk, Milk, Clay, Dough
+16			鹅卵石	鹅卵石及其台阶、板	Cobblestone	Cobblestone and its Stairs, Slab
+17			基岩		Bedrock	
+18			沙子		Sand	
+19			碎石		Gravel	
+20			橡树侧面		Side of Oak Wood	
+21			树木顶部		Top of Woods	
+22			草陷阱		Grass Trap	
+23			染色木板		Painted Planks	
+24			染色花岗岩		Painted Granite	
+25			箱子侧面		Side of Chest	
+26			箱子背面		Back of Chest	
+27			箱子正面		Front of Chest	
+28			这是什么？	有人能告诉我这是什么植物的材质吗？	What's This?	Could Any Body Tell Me What Planet This Is?
+29			未成熟棉花		Growing Cotton	
+30			棉花		Cotton	
+31			火把顶部	火把顶部、蛋清	Top of Torch	Top of Torch, Egg White
+32			铜矿		Copper Ore	
+33			铁矿		Iron Ore	
+34			煤矿		Coal Ore	
+35			硝矿		Saltpeter Ore	
+36			硫矿		Sulphur Ore	
+37			耕地		Soil	
+38			地毯		Carpet	
+39			染色红砖		Painted Brick Wall	
+40			染色玄武岩		Painted Basalt	
+41			墓碑		Gravestone	
+42			箱子顶部	箱子顶部、发射器侧面	Top of Chest	Top of Chest, Side of Dispenser
+43			合成台顶部		Top of Crafting Table	
+44			熔炉侧面		Side of Furnace	
+45			熔炉里面		Inside of Furnace	
+46			熔炉正面		Front of Furnace	
+47			木梯	木梯、木棍、指南针	Wooden Ladder	Wooden Ladder, Stick, Compass
+48			钻石矿		Diamond Ore	
+49			锗矿		Germanium Ore	
+50			染色石砖		Painted Bricks	
+51			染色大理石		Painted Marble	
+52			橡树叶	橡树叶、白桦树叶	Oak Leaves	Oak Leaves, Birch Leaves
+54			石砖	石砖及其台阶、板	Stone Bricks	Stone Brick and its Staris, Slab
+55			干草		Dry Bush	
+56			橡树苗		Oak Sapling	
+57			火焰炸药桶		Incendiary Keg	
+58			铁栅栏	铁栅栏及其门	Iron Fence	Iron Fence and its gate
+60			毛皮		Fur	
+61			炸药桶		Gunpowder Keg	
+62			大煤块	篝火	Solid Coal Block	Campfire
+63		TRUE	铁锭	铁锭及其制品、铁梯、铁牌、磁铁、桶、哨子、温度计	Iron Ladder	Iron Ingot and its Products, Ladder, Sign, Magnet, Bucket, Whistle, Thermometer
+64			染色砂岩		Painted Sandstone	
+65			冰		Ice	
+66			雪	雪、雪球	Snow	Snow, SnowBall
+67			玻璃		Glass	
+68			雪地侧面		Side of Snow Dirt	
+69			染色鹅卵石		Painted Cobblestone	
+70			红砖墙	红砖及其台阶、板、栅栏	Brick Wall	Stone Brick and its Staris, Slab,Fence
+71			大干草		Large Dry Bush	
+72			白桦树苗		Birch Sapling	
+73			云杉树苗		Spruce Sapling	
+74			种子		Seeds	
+76			棉花团		Cotton Wad	
+77			皮革	皮革、马鞍	Leather	Leather, Saddle
+78		TRUE	锗块	锗块、电路板、开关、二极管	Semiconductor Block	Semiconductor Block, Electrics, Switch, LED
+79			铜锭	铜锭及其制品、电线	Copper Ingot	Copper Ingot and its Products, Electric Wire
+80			铁栏门上部		Top Half of Cell Door	
+81			木门上部		Top Half of Wooden Door	
+82			铁门上部		Top Half of Iron Door	
+83			玻璃框		Framed Glass	
+84			杂草		Grass	
+85			高杂草		Tall Grass	
+86			黑麦成长1		Growing Rye 1	
+87			黑麦成长2		Growing Rye 2	
+88			黑麦成长3		Growing Rye 3	
+89			黑麦成长4		Growing Rye 4	
+90			黑麦成长5		Growing Rye 5	
+91			黑麦成长6		Growing Rye 6	
+92			黑麦成长7		Growing Rye 7	
+93			黑麦成长8		Growing Rye 8	
+94			野黑麦	野黑麦、黑麦成长9	Wild Rye	Wild Rye, Growing Rye 9
+95			成熟黑麦		Grown Rye	
+96			铁栏门下部		Bottom Half of Cell Door	
+97			木门下部		Bottom Half of Wooden Door	
+98			铁门下部		Bottom Half of Iron Door	
+99			窗户		Window	
+100			仙人掌侧面		Side of Cactus	
+101			仙人掌顶部		Top of Cactus	
+102			南瓜	南瓜、南瓜灯	Pumpkin	Pumpkin, Back of Jack O'Lantern
+103			南瓜灯正面		Front of Jack O'Lantern	
+104			海带		Kelp	
+105			海草		Seagrass	
+106	TRUE					
+107	TRUE					
+108	TRUE					
+109	TRUE					
+110	TRUE					
+111	TRUE					
+112	TRUE					
+113			这是什么？	有人能告诉我这是什么的材质吗？	What's This?	Could Any Body Tell Me What This Is?
+114			铁活板门		Cell Trapdoor	
+115			木活板门		Wooden Trapdoor	
+116			云杉侧面		Side of Spruce Wood	
+117			白桦侧面		Side of Birch Wood	
+118			电池侧面		Side of Battery	
+119			电池顶部		Top of Battery	
+120			光电二极管		Photodiode	
+121			运动探测器		Motion Detector	
+122			真值表		Truth Table Circuit	
+123			火背景1		Fire Background 1	
+124			岩浆1		Magma 1	
+125			岩浆2		Magma 2	
+126			岩浆3		Magma 3	
+127	TRUE					
+128			靶子		Target	
+129			温度计		Thermometer	
+130			鱼肉	生鱼肉、熟鱼肉、腐鱼肉	Fish	Raw Fish, Cooked Fish, Rotten FIsh
+131	TRUE					
+132			云杉树叶	云杉树叶、高大云杉树叶、金合欢树叶、圣诞树	Spruce Leaves	Spruce Leaves, Tall Spruce Leaves, Mimosa Leaves, Christmas Tree
+133			逻辑与门		Logic AND Gate	
+134			电灯 关		Lightbulb Off	
+135			电灯 开		Lightbulb On	
+136			穿墙鹅卵石		Wire Through Cobblestone	
+137			数模转换器		Digital To Analog Converter	
+138			可调延时器		Adjustable Delay Gate	
+139			火背景2		Fire Background 2	
+140			岩浆4		Magma 4	
+141			岩浆5		Magma 5	
+142			岩浆6		Magma 6	
+143	TRUE					
+144	TRUE					
+145	TRUE					
+146	TRUE					
+147			鸟蛋	海鸥、渡鸦、食火鸡、鸵鸟的蛋	Bird Egg	Egg of Seagull, Raven, Cassow, Ostrich
+148			鸭蛋		Duck Egg	
+149			逻辑或门		Logic OR Gate	
+150			逻辑非门		Logic NOT Gate	
+151			拉杆开关		Switch	
+152			穿墙红砖		Wire Through Bricks	
+153			模数转换器		Analog To Digital Converter	
+154			活塞侧面		Side of Piston	
+155			火背景3		Fire Background 3	
+156			岩浆7		Magma 7	
+157			岩浆8		Magma 8	
+158			岩浆9		Magma 9	
+159	TRUE					
+160			腐坏食物表面		Surface of Rotten Food	
+161			肉类	生肉、熟肉、腐肉	Raw Meat	Raw Meat, Cooked Meat, Rotten Meat
+162	TRUE					
+163			其他蛋	除海鸥、鸭子、渡鸦、食火鸡、鸵鸟以外全部蛋	Other Egg	Egg Besides of Seagull, Duck, Raven, Cassow, Ostrich
+164	TRUE					
+165			按钮		Button	
+166			延时器		Delay Gate	
+167			SR锁存器		SR Latch	
+168			穿墙木板		Wire Through Planks	
+169			4-LED		4-LED	
+170			1-LED	1-LED、活塞底部	1-LED	1-LED、Bottom of Piston
+171	TRUE					
+172			水1		Water 1	
+173			水2		Water 2	
+174			水3		Water 3	
+175	TRUE					
+176			砂岩	砂岩及其台阶、板	Sandstone	Sandstone and its Staris, Slab
+177			温度计		Thermometer	
+178			指南针		Compass	
+179			大孔雀石块		Malachite Block	
+180			大铁块		Solid Iron Block	
+181			大铜块		Solid Copper Block	
+182			大钻石块	大钻石块、钻石制品	Solid Diamond Block	Solid Diamond Block, and diamond's products
+183			电子雷管		Electric Detonator	
+184			穿墙花岗岩		Wire Through Stone	
+185			声音产生器		Sound Generator	
+186			普通活塞头部		Piston Head	
+187	TRUE					
+188			水4		Water 4	
+189			水5		Water 5	
+190			水6		Water 6	
+191	TRUE					
+192	TRUE					
+193			烟花		Fireworks	
+194			火柴		Match	
+195			这是什么？	有人能告诉我这是什么的材质吗？	What's This?	Could Any Body Tell Me What This Is?
+196			羽毛		Feather	
+197			绳子		String	
+198			染料	染料、面粉	Pigment	Pigment, Flour
+199			随机信号产生器		Random Generator	
+200			逻辑异或门		Logic XOR Gate	
+201			七段数码管		7-Segment Display	
+202			粘性活塞头部		Pull Piston Head	
+203	TRUE					
+204			水7		Water 7	
+205			水8		Water 8	
+206			水9		Water 9	
+207	TRUE					
+208	TRUE					
+209	TRUE					
+210	TRUE					
+211	TRUE					
+212			柳条灯		Wicker Lamp	
+213			帆布		Canvas	
+214	TRUE					
+215			火把		Torch	
+216			穿墙半导体		Wire Through Semiconductor	
+217			四位计数器		4-Bit Counter	
+218			严格粘性活塞头部		Strict Pull Piston Head	
+219	TRUE					
+220	TRUE					
+221	TRUE					
+222	TRUE					
+223	TRUE					
+224	TRUE					
+225			火药		Gunpowder	
+226	TRUE					
+227	TRUE					
+228	TRUE					
+229			单颗子弹	大子弹、小子弹	Musket Ball	Musket Ball, BuckshotBall
+230			面包		Bread	
+231			霰弹		Buckshot	
+232			存储器		Memory Bank	
+233			实时钟		Real Time Clock	
+234	TRUE					
+235	TRUE					
+236	TRUE					
+237	TRUE					
+238	TRUE					
+239	TRUE					
+240	TRUE					
+241	TRUE					
+242	TRUE					
+243	TRUE					
+244	TRUE					
+245	TRUE					
+246	TRUE					
+247	TRUE					
+248	TRUE					
+249	TRUE					
+250	TRUE					
+251	TRUE					
+252	TRUE					
+253	TRUE					
+254	TRUE					
+255	TRUE					

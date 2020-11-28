@@ -1,6 +1,8 @@
 using Prism.Commands;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -9,11 +11,9 @@ namespace SurvivalcraftTextureStudio
 {
     public class BlockTextureInfo : INotifyPropertyChanged
     {
-        public BlockTextureInfo(int index, string name = "undefined", string description = "undefined too", float rotation = 0)
+        public BlockTextureInfo(int index, float rotation = 0)
         {
             Index = index;
-            Name = name;
-            Description = description;
             Rotation = rotation;
             GotFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
             {
@@ -47,32 +47,27 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public string _Name;
+        public Dictionary<CultureInfo, string> _Name;
 
         public string Name
         {
-            get { return _Name; }
-            set
-            {
-                if (_Name != value)
-                {
-                    _Name = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Name"));
-                }
-            }
+            get { return _Name[CultureInfo.CurrentCulture]; }
         }
 
-        public string _Description;
+        public Dictionary<CultureInfo, string> _Description;
 
         public string Description
         {
-            get { return _Description; }
-            set
+            get
             {
-                if (_Description != value)
+                string des = _Description[CultureInfo.CurrentCulture];
+                if (des.Length == 0)
                 {
-                    _Description = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Description"));
+                    return null;
+                }
+                else
+                {
+                    return des;
                 }
             }
         }

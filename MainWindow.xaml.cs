@@ -41,6 +41,7 @@ namespace SurvivalcraftTextureStudio
             string language = CultureInfo.CurrentCulture.Name;
             if (language != "zh-CN")
             {
+                CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en");
                 language = "en";
             }
             string path = System.IO.Path.Combine(Environment.CurrentDirectory, "Languages");
