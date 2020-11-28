@@ -7,6 +7,7 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
+    <local:Int000Converter x:Key="int000Converter"/>
     <Duration x:Key="AnimationDuration">0:0:0.2</Duration>
     <Storyboard x:Key="BlockButtonAppearStoryboard">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1"
@@ -142,10 +143,12 @@
                                  Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
                 </Grid>
             </Border>
-            <DockPanel Margin="0,8,0,0">
-                <TextBlock Margin="0,0,10,0" DockPanel.Dock="Left" FontSize="14"
-                           Text="{Binding Index}"/>
-                <TextBlock Margin="0,0,10,0" DockPanel.Dock="Right" FontSize="14"
+            <DockPanel Margin="0,8,0,0" VerticalAlignment="Top">
+                <TextBlock Margin="0,0,10,0" DockPanel.Dock="Left" FontSize="14"><Run Text="{Binding Index, Converter={StaticResource int000Converter}}"/><Bold>
+                        <Run Text="{Binding Index}"/>
+                    </Bold></TextBlock>
+                <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right" DockPanel.Dock="Right"
+                           FontSize="14"
                            Text="{Binding Name}"/>
             </DockPanel>
         </StackPanel>
