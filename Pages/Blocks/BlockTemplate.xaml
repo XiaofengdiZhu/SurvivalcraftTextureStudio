@@ -144,13 +144,6 @@
                                  Visibility="{Binding IsTextureExist, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
                 </Grid>
             </Border>
-            <!--<DockPanel Margin="0,8,0,0" VerticalAlignment="Top">
-                <TextBlock Margin="0,0,10,0" DockPanel.Dock="Left" FontSize="14"><Run Text="{Binding Index, Converter={StaticResource int000Converter}}"/><Bold>
-                        <Run Text="{Binding Index}"/>
-                    </Bold></TextBlock>
-                <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right" DockPanel.Dock="Right"
-                           FontSize="14" Text="Analog To Digital Converter"/>
-            </DockPanel>-->
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="28"/>

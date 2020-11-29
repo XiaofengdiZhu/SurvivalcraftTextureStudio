@@ -256,7 +256,7 @@ namespace SurvivalcraftTextureStudio
 
         private void ImportBlocksTextureButton_Click(object sender, RoutedEventArgs e)
         {
-            BlocksPageViewModel.BPVM.ImportBlocksTexture();
+            BlocksPageViewModel.BPVM.ImportBlocksTextureBySelectingFile();
         }
     }
 }

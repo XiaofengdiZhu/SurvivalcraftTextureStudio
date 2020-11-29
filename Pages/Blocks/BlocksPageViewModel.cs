@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SurvivalcraftTextureStudio
@@ -15,112 +16,24 @@ namespace SurvivalcraftTextureStudio
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public static BlocksPageViewModel BPVM;
+        public string BlocksdataPath = System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv";
         public int NowPerBlockSize = 32;
         public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
 
         public BlocksPageViewModel()
         {
-            if (BlockTexturesDictionary == null)
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            if (BlockTexturesDictionary.Count==0)
             {
-                BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
-                Bitmap OrigianlBlocksTexture = Properties.Resources.OriginalBlocksTextureFrom2_2;
-                NowPerBlockSize = OrigianlBlocksTexture.Width / 16;
-                NowPixelFormat = OrigianlBlocksTexture.PixelFormat;
-                int[] baseInformationLocation = new int[3];
-                Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();
-                bool FirstLineReaded = false;
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                foreach (string block in File.ReadAllText(System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv", Encoding.UTF8).Split('\n'))
+                IsOperatingBlocksTexture = true;
+                Task.Factory.StartNew(() =>
                 {
-                    if (FirstLineReaded)
-                    {
-                        string[] str = block.Split('\t');
-                        if (str.Length > 3 && str.Length % 2 == 1)
-                        {
-                            Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
-                            Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
-                            foreach (var a in otherInformationLocation)
-                            {
-                                name.Add(a.Key, str[a.Value[0]]);
-                                description.Add(a.Key, str[a.Value[1]]);
-                            }
-                            int index = int.Parse(str[baseInformationLocation[0]]);
-                            BlockTexturesDictionary.Add(index, new BlockTextureInfo(index)
-                            {
-                                _Name = name,
-                                _Description = description,
-                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(OrigianlBlocksTexture, index, NowPerBlockSize)
-                            });
-                        }
-                    }
-                    else
-                    {
-                        FirstLineReaded = true;
-                        int i = 0;
-                        foreach (string title in block.Split('\t'))
-                        {
-                            if (title == "Index")
-                            {
-                                baseInformationLocation[0] = i;
-                            }
-                            else if (title == "IsNull")
-                            {
-                                baseInformationLocation[1] = i;
-                            }
-                            else if (title == "IsMore")
-                            {
-                                baseInformationLocation[2] = i;
-                            }
-                            else
-                            {
-                                string[] str = title.Split('.');
-                                if (str.Length == 2)
-                                {
-                                    try
-                                    {
-                                        CultureInfo culture = CultureInfo.GetCultureInfo(str[1]);
-                                        if (!otherInformationLocation.ContainsKey(culture))
-                                        {
-                                            switch (str[0])
-                                            {
-                                                case "Name": otherInformationLocation.Add(culture, new int[2] { i, -1 }); break;
-                                                case "Description": otherInformationLocation.Add(culture, new int[2] { -1, i }); break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            switch (str[0])
-                                            {
-                                                case "Name": otherInformationLocation[culture][0] = i; break;
-                                                case "Description": otherInformationLocation[culture][1] = i; break;
-                                            }
-                                        }
-                                    }
-                                    catch (System.Exception) { }
-                                }
-                            }
-                            i++;
-                        }
-                        foreach (KeyValuePair<CultureInfo, int[]> locations in otherInformationLocation)
-                        {
-                            if (locations.Value[0] == -1 || locations.Value[1] == -1)
-                            {
-                                otherInformationLocation.Remove(locations.Key);
-                            }
-                        }
-                    }
-                }
+                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Properties.Resources.OriginalBlocksTextureFrom2_2);
+                    IsOperatingBlocksTexture = false;
+                });
             }
-            System.GC.Collect();
             BPVM = this;
             InitiateCommands();
-        }
-
-        public class Titles
-        {
-            public int Index;
-            public bool IsNull;
-            public bool IsMore;
         }
 
         public int _BlockIndexOnFocus;
@@ -139,7 +52,7 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public Dictionary<int, BlockTextureInfo> _BlockTexturesDictionary;
+        public Dictionary<int, BlockTextureInfo> _BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
 
         public Dictionary<int, BlockTextureInfo> BlockTexturesDictionary
         {
@@ -230,7 +143,7 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public void ImportBlocksTexture()
+        public void ImportBlocksTextureBySelectingFile()
         {
             if (IsOperatingBlocksTexture)
             {
@@ -248,29 +161,116 @@ namespace SurvivalcraftTextureStudio
                 openFileDialog.DefaultExt = "png";
                 if (openFileDialog.ShowDialog().Value)
                 {
-                    Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
-                    Bitmap bitmap = new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read));
-                    int NewPerBlockSize = bitmap.Width / 16;
-                    PixelFormat NewPixelFormat = bitmap.PixelFormat;
-                    for (int i = 0; i < 16; i++)
-                    {
-                        for (int j = 0; j < 16; j++)
-                        {
-                            Bitmap tempBitmap = ImageHelper.GetBlockBitmapFromTexture(bitmap, i * 16 + j, NewPerBlockSize);
-                            newBlockTexturesDictionary.Add(i * 16 + j, new BlockTextureInfo(i * 16 + j) { BitmapCache = tempBitmap });
-                        }
-                    }
-                    lock (BlockTexturesDictionary)
-                    {
-                        NowPerBlockSize = NewPerBlockSize;
-                        NowPixelFormat = NewPixelFormat;
-                        BlockTexturesDictionary = newBlockTexturesDictionary;
-                    }
+                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)));
                 }
                 IsOperatingBlocksTexture = false;
             });
             ImportThread.SetApartmentState(ApartmentState.STA);
             ImportThread.Start();
+        }
+
+        public void ImportBlocksTexture(string inputString, Bitmap inputBitmap)
+        {
+            Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = GetBlockTexturesDictionaryFromStringAndBitmap(inputString, inputBitmap);
+            int NewPerBlockSize = inputBitmap.Width / 16;
+            PixelFormat NewPixelFormat = inputBitmap.PixelFormat;
+            lock (BlockTexturesDictionary)
+            {
+                NowPerBlockSize = NewPerBlockSize;
+                NowPixelFormat = NewPixelFormat;
+                BlockTexturesDictionary = newBlockTexturesDictionary;
+            }
+        }
+
+        public static Dictionary<int, BlockTextureInfo> GetBlockTexturesDictionaryFromStringAndBitmap(string inputString, Bitmap inputBitmap)
+        {
+            Dictionary<int, BlockTextureInfo> output = new Dictionary<int, BlockTextureInfo>();
+            int perBlockSize = inputBitmap.Width / 16;
+            int[] baseInformationLocation = new int[3];
+            Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();
+            bool FirstLineReaded = false;
+            foreach (string block in inputString.Split('\n'))
+            {
+                if (FirstLineReaded)
+                {
+                    string[] str = block.Split('\t');
+                    if (str.Length > 3 && str.Length % 2 == 1)
+                    {
+                        Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
+                        Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
+                        foreach (var a in otherInformationLocation)
+                        {
+                            name.Add(a.Key, str[a.Value[0]]);
+                            description.Add(a.Key, str[a.Value[1]]);
+                        }
+                        int index = int.Parse(str[baseInformationLocation[0]]);
+                        output.Add(index, new BlockTextureInfo(index)
+                        {
+                            _Name = name,
+                            _Description = description,
+                            BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
+                        });
+                    }
+                }
+                else
+                {
+                    FirstLineReaded = true;
+                    int i = 0;
+                    foreach (string title in block.Split('\t'))
+                    {
+                        if (title == "Index")
+                        {
+                            baseInformationLocation[0] = i;
+                        }
+                        else if (title == "IsNull")
+                        {
+                            baseInformationLocation[1] = i;
+                        }
+                        else if (title == "IsMore")
+                        {
+                            baseInformationLocation[2] = i;
+                        }
+                        else
+                        {
+                            string[] str = title.Split('.');
+                            if (str.Length == 2)
+                            {
+                                try
+                                {
+                                    CultureInfo culture = CultureInfo.GetCultureInfo(str[1]);
+                                    if (!otherInformationLocation.ContainsKey(culture))
+                                    {
+                                        switch (str[0])
+                                        {
+                                            case "Name": otherInformationLocation.Add(culture, new int[2] { i, -1 }); break;
+                                            case "Description": otherInformationLocation.Add(culture, new int[2] { -1, i }); break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (str[0])
+                                        {
+                                            case "Name": otherInformationLocation[culture][0] = i; break;
+                                            case "Description": otherInformationLocation[culture][1] = i; break;
+                                        }
+                                    }
+                                }
+                                catch (System.Exception) { }
+                            }
+                        }
+                        i++;
+                    }
+                    foreach (KeyValuePair<CultureInfo, int[]> locations in otherInformationLocation)
+                    {
+                        if (locations.Value[0] == -1 || locations.Value[1] == -1)
+                        {
+                            otherInformationLocation.Remove(locations.Key);
+                        }
+                    }
+                }
+            }
+            System.GC.Collect();
+            return output;
         }
 
         public void ChangeImage(BlockTextureInfo block)
