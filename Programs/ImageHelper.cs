@@ -68,6 +68,7 @@ namespace SurvivalcraftTextureStudio
 
         public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
         {
+            if (bitmap == null) return null;
             lock (bitmap)
             {
                 MemoryStream memory = new MemoryStream();
@@ -80,11 +81,6 @@ namespace SurvivalcraftTextureStudio
                 bitmapImage.Freeze();
                 return bitmapImage;
             }
-        }
-
-        public enum ScaleMode
-        {
-            Fill, Fit, Stretch, CenterNoSoScale, TopLeftNoScale, TopRightNoScale, BottomRightNoScale, BottomLeftNoScale
         }
     }
 

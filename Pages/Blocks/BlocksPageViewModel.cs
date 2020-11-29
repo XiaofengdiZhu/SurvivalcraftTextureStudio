@@ -19,7 +19,16 @@ namespace SurvivalcraftTextureStudio
         public string BlocksdataPath = System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv";
         public int NowPerBlockSize = 32;
         public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
-
+        public static Dictionary<CultureInfo, string> MoreText = new Dictionary<CultureInfo, string>()
+        {
+            {CultureInfo.GetCultureInfo("zh-CN"),"等" },
+            {CultureInfo.GetCultureInfo("en"),", etc" }
+        };
+        public static Dictionary<CultureInfo, string> LocationText = new Dictionary<CultureInfo, string>()
+        {
+            {CultureInfo.GetCultureInfo("zh-CN"),"{0}行 {1}列" },
+            {CultureInfo.GetCultureInfo("en"),", Row {0}, Column {1}" }
+        };
         public BlocksPageViewModel()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -73,6 +82,10 @@ namespace SurvivalcraftTextureStudio
             {
                 ChangeImage((BlockTextureInfo)o);
             });
+            EditImageCommand = new AnotherCommandImplementation(o =>
+            {
+                ChangeImage((BlockTextureInfo)o);
+            });
             ExportBlocksTextureCommand = new AnotherCommandImplementation(o =>
             {
                 ExportBlocksTexture();
@@ -81,6 +94,7 @@ namespace SurvivalcraftTextureStudio
 
         //public List<BlockTextureInfo> BlockTextures { get; set; }
         public ICommand ChangeImageCommand { get; set; }
+        public ICommand EditImageCommand { get; set; }
 
         public ICommand ExportBlocksTextureCommand { get; set; }
         public bool _IsOperatingBlocksTexture = false;
@@ -196,20 +210,37 @@ namespace SurvivalcraftTextureStudio
                     string[] str = block.Split('\t');
                     if (str.Length > 3 && str.Length % 2 == 1)
                     {
-                        Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
-                        Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
-                        foreach (var a in otherInformationLocation)
-                        {
-                            name.Add(a.Key, str[a.Value[0]]);
-                            description.Add(a.Key, str[a.Value[1]]);
-                        }
                         int index = int.Parse(str[baseInformationLocation[0]]);
-                        output.Add(index, new BlockTextureInfo(index)
+                        int row = index / 16 + 1;
+                        int colum = index % 16 + 1;
+                        bool isNull = str[baseInformationLocation[1]].ToLower()=="true";
+                        Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
+                        if (isNull)
                         {
-                            _Name = name,
-                            _Description = description,
-                            BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
-                        });
+                            foreach (var a in otherInformationLocation)
+                            {
+                                description.Add(a.Key, string.Format(LocationText[a.Key],row,colum));
+                            }
+                            output.Add(index, new BlockTextureInfo(index)
+                            {
+                                _Description = description,
+                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
+                            });
+                        } else
+                        {
+                            Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
+                            foreach (var a in otherInformationLocation)
+                            {
+                                name.Add(a.Key, str[a.Value[0]]);
+                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum)+"\n"+(str[a.Value[1]].Length==0? str[a.Value[0]] : str[a.Value[1]]) + (str[baseInformationLocation[2]].ToLower()=="true"?MoreText[a.Key]:""));
+                            }
+                            output.Add(index, new BlockTextureInfo(index)
+                            {
+                                _Name = name,
+                                _Description = description,
+                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
+                            });
+                        }
                     }
                 }
                 else

@@ -47,11 +47,21 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
+        public static Dictionary<CultureInfo, string> NoNameText = new Dictionary<CultureInfo, string>
+        {
+            {CultureInfo.GetCultureInfo("zh-CN"),"£¨¿Õ°×£©" },
+            {CultureInfo.GetCultureInfo("en"),", (Blank)" }
+        };
+
         public Dictionary<CultureInfo, string> _Name;
 
         public string Name
         {
-            get { return _Name[CultureInfo.CurrentCulture]; }
+            get
+            {
+                if (_Name == null) { return NoNameText[CultureInfo.CurrentCulture]; }
+                return _Name[CultureInfo.CurrentCulture];
+            }
         }
 
         public Dictionary<CultureInfo, string> _Description;
@@ -60,6 +70,7 @@ namespace SurvivalcraftTextureStudio
         {
             get
             {
+                if (_Description == null) { return null; }
                 string des = _Description[CultureInfo.CurrentCulture];
                 if (des.Length == 0)
                 {
@@ -96,7 +107,7 @@ namespace SurvivalcraftTextureStudio
 
         public bool IsTextureExist
         {
-            get { return Texture is null; }
+            get { return _Name is null; }
         }
 
         public Bitmap _BitmapCache;
