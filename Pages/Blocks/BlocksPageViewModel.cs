@@ -19,20 +19,23 @@ namespace SurvivalcraftTextureStudio
         public string BlocksdataPath = System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv";
         public int NowPerBlockSize = 32;
         public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
+
         public static Dictionary<CultureInfo, string> MoreText = new Dictionary<CultureInfo, string>()
         {
             {CultureInfo.GetCultureInfo("zh-CN"),"等" },
             {CultureInfo.GetCultureInfo("en"),", etc" }
         };
+
         public static Dictionary<CultureInfo, string> LocationText = new Dictionary<CultureInfo, string>()
         {
             {CultureInfo.GetCultureInfo("zh-CN"),"{0}行 {1}列" },
             {CultureInfo.GetCultureInfo("en"),", Row {0}, Column {1}" }
         };
+
         public BlocksPageViewModel()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (BlockTexturesDictionary.Count==0)
+            if (BlockTexturesDictionary.Count == 0)
             {
                 IsOperatingBlocksTexture = true;
                 Task.Factory.StartNew(() =>
@@ -80,11 +83,11 @@ namespace SurvivalcraftTextureStudio
         {
             ChangeImageCommand = new AnotherCommandImplementation(o =>
             {
-                ChangeImage((BlockTextureInfo)o);
+                ChangeImageBySelectingFile((BlockTextureInfo)o);
             });
             EditImageCommand = new AnotherCommandImplementation(o =>
             {
-                ChangeImage((BlockTextureInfo)o);
+                EditImage((BlockTextureInfo)o);
             });
             ExportBlocksTextureCommand = new AnotherCommandImplementation(o =>
             {
@@ -94,6 +97,7 @@ namespace SurvivalcraftTextureStudio
 
         //public List<BlockTextureInfo> BlockTextures { get; set; }
         public ICommand ChangeImageCommand { get; set; }
+
         public ICommand EditImageCommand { get; set; }
 
         public ICommand ExportBlocksTextureCommand { get; set; }
@@ -213,26 +217,27 @@ namespace SurvivalcraftTextureStudio
                         int index = int.Parse(str[baseInformationLocation[0]]);
                         int row = index / 16 + 1;
                         int colum = index % 16 + 1;
-                        bool isNull = str[baseInformationLocation[1]].ToLower()=="true";
+                        bool isNull = str[baseInformationLocation[1]].ToLower() == "true";
                         Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
                         if (isNull)
                         {
                             foreach (var a in otherInformationLocation)
                             {
-                                description.Add(a.Key, string.Format(LocationText[a.Key],row,colum));
+                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum));
                             }
                             output.Add(index, new BlockTextureInfo(index)
                             {
                                 _Description = description,
                                 BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
                             });
-                        } else
+                        }
+                        else
                         {
                             Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
                             foreach (var a in otherInformationLocation)
                             {
                                 name.Add(a.Key, str[a.Value[0]]);
-                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum)+"\n"+(str[a.Value[1]].Length==0? str[a.Value[0]] : str[a.Value[1]]) + (str[baseInformationLocation[2]].ToLower()=="true"?MoreText[a.Key]:""));
+                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum) + "\n" + (str[a.Value[1]].Length == 0 ? str[a.Value[0]] : str[a.Value[1]]) + (str[baseInformationLocation[2]].ToLower() == "true" ? MoreText[a.Key] : ""));
                             }
                             output.Add(index, new BlockTextureInfo(index)
                             {
@@ -304,7 +309,7 @@ namespace SurvivalcraftTextureStudio
             return output;
         }
 
-        public void ChangeImage(BlockTextureInfo block)
+        public void ChangeImageBySelectingFile(BlockTextureInfo block)
         {
             if (IsOperatingBlocksTexture)
             {
@@ -324,7 +329,8 @@ namespace SurvivalcraftTextureStudio
                 {
                     lock (block)
                     {
-                        block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), NowPerBlockSize, NowPerBlockSize);
+                        //block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), NowPerBlockSize, NowPerBlockSize);
+                        ChangeImage(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), block);
                     }
                 }
                 IsOperatingBlocksTexture = false;
@@ -333,6 +339,39 @@ namespace SurvivalcraftTextureStudio
             ChangeImageThread.Start();
         }
 
+        public void ChangeImage(Bitmap bitmap, BlockTextureInfo block)
+        {
+            block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(bitmap, NowPerBlockSize, NowPerBlockSize);
+        }
+        public void EditImage(BlockTextureInfo block)
+        {
+            if (IsOperatingBlocksTexture)
+            {
+                return;
+            }
+            IsOperatingBlocksTexture = true;
+            Task.Factory.StartNew(() =>
+            {
+                string directory = System.Environment.CurrentDirectory + @"\Cache\";
+                string path;
+                lock (block)
+                {
+                    path = directory + block.Index + ".bmp";
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+                    block.BitmapCache.Save(path, ImageFormat.Bmp);
+                }
+                System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
+                info.FileName = "mspaint.exe";
+                info.Arguments = "\""+path+"\"";
+                System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                proc.StartInfo = info;
+                proc.Start();
+                IsOperatingBlocksTexture = false;
+            });
+        }
         public void ExportBlocksTexture()
         {
             if (IsOperatingBlocksTexture)
