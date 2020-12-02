@@ -11,10 +11,9 @@ namespace SurvivalcraftTextureStudio
 {
     public class BlockTextureInfo : INotifyPropertyChanged
     {
-        public BlockTextureInfo(int index, float rotation = 0)
+        public BlockTextureInfo(int index)
         {
             Index = index;
-            Rotation = rotation;
             GotFucusCommand = new DelegateCommand<ExCommandParameter>((p) =>
             {
                 if (!IsFocused && Index != BlocksPageViewModel.BPVM.BlockIndexOnFocus)
@@ -82,23 +81,6 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
-
-        public float _Rotation;
-
-        public float Rotation
-        {
-            get { return _Rotation; }
-            set
-            {
-                if (_Rotation != value)
-                {
-                    _Rotation = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Rotation"));
-                }
-            }
-        }
-
-        public BitmapImage _Texture;
 
         public BitmapImage Texture
         {

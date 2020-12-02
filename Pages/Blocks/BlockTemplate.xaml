@@ -75,13 +75,7 @@
                     <i:EventTrigger EventName="TouchDown">
                         <local:ExInvokeCommandAction Command="{Binding GotFucusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Border}}}"/>
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="LostKeyboardFocus">
-                        <local:ExInvokeCommandAction Command="{Binding LostFucusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Border}}}"/>
-                    </i:EventTrigger>
                     <i:EventTrigger EventName="MouseLeave">
-                        <local:ExInvokeCommandAction Command="{Binding LostFucusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Border}}}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="TouchUp">
                         <local:ExInvokeCommandAction Command="{Binding LostFucusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Border}}}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -96,7 +90,7 @@
                     </Style>
                 </Border.Style>
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding Texture, IsAsync=True}" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="{Binding Texture, IsAsync=True}" Stretch="Uniform"/>
                 </Border.Background>
                 <Grid Opacity="0">
                     <Grid.Style>
@@ -134,7 +128,10 @@
                     <Border Background="#80000000" CornerRadius="12"/>
                     <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical"
                                Visibility="{Binding IsTextureExist, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}">
-                        <Button Style="{StaticResource BlockButton}" ToolTip="预览">
+                        <Button Style="{StaticResource BlockButton}"
+                                ToolTip="预览"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.PreviewImageCommand, Mode=OneTime}"
+                                CommandParameter="{Binding}">
                             <md:PackIcon Width="20" Height="20" Kind="FileFind"/>
                         </Button>
                         <Button Style="{StaticResource BlockButton}"

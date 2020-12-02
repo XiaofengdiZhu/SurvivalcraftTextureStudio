@@ -52,12 +52,13 @@ Index	IsNull	IsMore	Name.zh-CN	Description.zh-CN	Name.en	Description.en
 50			染色石砖		Painted Bricks	
 51			染色大理石		Painted Marble	
 52			橡树叶	橡树叶、白桦树叶	Oak Leaves	Oak Leaves, Birch Leaves
-53			施肥耕地		Fertilized Soil
+53			施肥耕地		Fertilized Solid	
 54			石砖	石砖及其台阶、板	Stone Bricks	Stone Brick and its Staris, Slab
 55			干草		Dry Bush	
 56			橡树苗		Oak Sapling	
 57			火焰炸药桶		Incendiary Keg	
 58			铁栅栏	铁栅栏及其门	Iron Fence	Iron Fence and its gate
+59			发射器正面		Front of Dispenser	
 60			毛皮		Fur	
 61			炸药桶		Gunpowder Keg	
 62			大煤块	篝火	Solid Coal Block	Campfire
@@ -72,7 +73,8 @@ Index	IsNull	IsMore	Name.zh-CN	Description.zh-CN	Name.en	Description.en
 71			大干草		Large Dry Bush	
 72			白桦树苗		Birch Sapling	
 73			云杉树苗		Spruce Sapling	
-74			种子		Seeds	
+74			黑麦种子		Rye Seeds	
+75			种子		Seeds	
 76			棉花团		Cotton Wad	
 77			皮革	皮革、马鞍	Leather	Leather, Saddle
 78		TRUE	锗块	锗块、电路板、开关、二极管	Semiconductor Block	Semiconductor Block, Electrics, Switch, LED

@@ -16,6 +16,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="BlockTemplate.xaml"/>
+                <ResourceDictionary Source="MaterialDesignTheme.ToolBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
             <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
@@ -24,17 +25,59 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
-        <wpftk:VirtualizingItemsControl x:Name="wrap"
-                                        ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
-                                        VirtualizingPanel.CacheLength="24,24" VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
-                                        VirtualizingPanel.VirtualizationMode="Recycling">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel Margin="0,16" SpacingMode="Uniform"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </wpftk:VirtualizingItemsControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="3"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignDivider}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="1" Width="Auto" Height="Auto" Margin="16"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding PreviewingImage, IsAsync=True}" Stretch="Uniform"/>
+                    </Border.Background>
+                </Border>
+                <Button Grid.Column="2" Width="32" Height="32" Margin="6"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand"
+                        Foreground="Gray"
+                        Style="{StaticResource MaterialDesignIconForegroundButton}">
+                    <md:PackIcon Width="16" Height="16" Kind="Close"/>
+                </Button>
+                <StackPanel Grid.Column="2" Height="100" HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <ToolBarTray Width="59" Height="100" Orientation="Vertical">
+                        <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
+                            <Button ToolTip="逆时针">
+                                <md:PackIcon Kind="RotateLeft"/>
+                            </Button>
+                            <Button ToolTip="顺时针">
+                                <md:PackIcon Kind="RotateRight"/>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                </StackPanel>
+            </Grid>
+            <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch"
+                          Style="{StaticResource MaterialDesignGridSplitter}"/>
+            <wpftk:VirtualizingItemsControl x:Name="wrap" Grid.Row="2"
+                                            ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
+                                            VirtualizingPanel.CacheLength="24,24" VirtualizingPanel.CacheLengthUnit="Item"
+                                            VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                            VirtualizingPanel.VirtualizationMode="Recycling">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <wpftk:VirtualizingWrapPanel Margin="0,16" SpacingMode="Uniform"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </wpftk:VirtualizingItemsControl>
+        </Grid>
         <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" md:ButtonProgressAssist.IsIndeterminate="True"
                 md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"

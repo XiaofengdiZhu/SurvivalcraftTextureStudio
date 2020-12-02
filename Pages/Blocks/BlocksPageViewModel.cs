@@ -93,6 +93,10 @@ namespace SurvivalcraftTextureStudio
             {
                 ExportBlocksTexture();
             });
+            PreviewImageCommand = new AnotherCommandImplementation(o =>
+            {
+                PreviewingImageIndex = ((BlockTextureInfo)o).Index;
+            });
         }
 
         //public List<BlockTextureInfo> BlockTextures { get; set; }
@@ -101,6 +105,7 @@ namespace SurvivalcraftTextureStudio
         public ICommand EditImageCommand { get; set; }
 
         public ICommand ExportBlocksTextureCommand { get; set; }
+        public ICommand PreviewImageCommand { get; set; }
         public bool _IsOperatingBlocksTexture = false;
 
         public bool IsOperatingBlocksTexture
@@ -197,6 +202,7 @@ namespace SurvivalcraftTextureStudio
                 NowPerBlockSize = NewPerBlockSize;
                 NowPixelFormat = NewPixelFormat;
                 BlockTexturesDictionary = newBlockTexturesDictionary;
+                PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImage"));
             }
         }
 
@@ -343,6 +349,7 @@ namespace SurvivalcraftTextureStudio
         {
             block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(bitmap, NowPerBlockSize, NowPerBlockSize);
         }
+
         public void EditImage(BlockTextureInfo block)
         {
             if (IsOperatingBlocksTexture)
@@ -365,13 +372,14 @@ namespace SurvivalcraftTextureStudio
                 }
                 System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
                 info.FileName = "mspaint.exe";
-                info.Arguments = "\""+path+"\"";
+                info.Arguments = "\"" + path + "\"";
                 System.Diagnostics.Process proc = new System.Diagnostics.Process();
                 proc.StartInfo = info;
                 proc.Start();
                 IsOperatingBlocksTexture = false;
             });
         }
+
         public void ExportBlocksTexture()
         {
             if (IsOperatingBlocksTexture)
@@ -427,6 +435,39 @@ namespace SurvivalcraftTextureStudio
             });
             ExportThread.SetApartmentState(ApartmentState.STA);
             ExportThread.Start();
+        }
+
+        public bool IsPreviewing
+        {
+            get { return PreviewingImageIndex != -1; }
+        }
+
+        public int _PreviewingImageIndex = -1;
+
+        public int PreviewingImageIndex
+        {
+            get { return _PreviewingImageIndex; }
+            set
+            {
+                if (_PreviewingImageIndex != value)
+                {
+                    _PreviewingImageIndex = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImageIndex"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImage"));
+                }
+            }
+        }
+
+        public System.Windows.Media.Imaging.BitmapImage PreviewingImage
+        {
+            get
+            {
+                if (BlockTexturesDictionary is null || BlockTexturesDictionary.Count == 0|| PreviewingImageIndex<0) { return null; }
+                else
+                {
+                    return BlockTexturesDictionary[PreviewingImageIndex].Texture;
+                }
+            }
         }
     }
 }
