@@ -158,7 +158,8 @@
                 <md:PackIcon Width="20" Height="20" Kind="ImageSizeSelectLarge"/>
                 <Slider x:Name="BlockSizeSlider" Width="140" Margin="12,0" IsSnapToTickEnabled="True"
                         LargeChange="20" Maximum="200" Minimum="40" SmallChange="10"
-                        TickFrequency="10" Value="120"/>
+                        TickFrequency="10"
+                        Value="{Binding BlockSizeSliderValue, Mode=TwoWay}"/>
                 <md:PackIcon Width="20" Height="20" Margin="0,0,24,0" Kind="ImageSizeSelectActual"/>
             </StackPanel>
         </Grid>

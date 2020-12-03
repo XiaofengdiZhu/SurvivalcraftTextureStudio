@@ -58,7 +58,8 @@
         </Style.Triggers>
     </Style>
     <DataTemplate DataType="{x:Type local:BlockTextureInfo}">
-        <StackPanel Width="120" Margin="8"
+        <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.BlockSizeSliderValue, Mode=OneWay}"
+                    Margin="8"
                     ToolTip="{Binding Description}"
                     ToolTipService.InitialShowDelay="1000" ToolTipService.Placement="MousePoint">
             <Border Height="{Binding Path=Width, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type StackPanel}}, Mode=OneWay}"

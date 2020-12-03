@@ -37,7 +37,7 @@ namespace SurvivalcraftTextureStudio
             {
                 i.Resize(new ResizeOptions()
                 {
-                    Size = new SixLabors.ImageSharp.Size(width, height),
+                    Size = new Size(width, height),
                     Mode = mode,
                     Sampler = resampler ?? KnownResamplers.NearestNeighbor
                 });

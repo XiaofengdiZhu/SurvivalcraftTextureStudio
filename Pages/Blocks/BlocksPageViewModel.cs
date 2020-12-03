@@ -459,6 +459,19 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+        public int _BlockSizeSliderValue = 120;
+        public int BlockSizeSliderValue
+        {
+            get { return _BlockSizeSliderValue; }
+            set
+            {
+                if (_BlockSizeSliderValue != value)
+                {
+                    _BlockSizeSliderValue = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("BlockSizeSliderValue"));
+                }
+            }
+        }
 
         public System.Windows.Media.Imaging.BitmapImage PreviewingImage
         {
