@@ -18,6 +18,7 @@ namespace SurvivalcraftTextureStudio
             {
                 g.DrawImage(input, new System.Drawing.Rectangle(0, 0, width, height), cropRect, GraphicsUnit.Pixel);
             }
+            //output.Save(@"E:\Microsoft Visual Studio\Projects\SurvivalcraftTextureStudio\bin\x64\Debug\net5.0-windows\Cache\Cache\"+x+","+y+".png", System.Drawing.Imaging.ImageFormat.Png);
             return output;
         }
 
@@ -47,9 +48,10 @@ namespace SurvivalcraftTextureStudio
         public static Bitmap ResizeBitmapByImageSharp(Bitmap input, int width, int height, ResizeMode mode = ResizeMode.Stretch, IResampler resampler = null)
         {
             MemoryStream memory = new MemoryStream();
-            input.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+            input.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
             memory.Position = 0;
-            SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(memory, new BmpDecoder());
+            SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(memory, new SixLabors.ImageSharp.Formats.Png.PngDecoder());
+            image.Save(@"E:\Microsoft Visual Studio\Projects\SurvivalcraftTextureStudio\bin\x64\Debug\net5.0-windows\Cache\b.png", new SixLabors.ImageSharp.Formats.Png.PngEncoder());
             memory.Dispose();
             image.Mutate(i =>
             {
@@ -60,10 +62,13 @@ namespace SurvivalcraftTextureStudio
                     Sampler = resampler ?? KnownResamplers.NearestNeighbor
                 });
             });
-            MemoryStream newMemory = new MemoryStream();
-            image.SaveAsBmp(newMemory);
+             MemoryStream newMemory = new MemoryStream();
+            image.Save(newMemory, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+            //image.SaveAsBmp(newMemory);
             image.Dispose();
-            return new Bitmap(newMemory);
+            Bitmap bitmap = new Bitmap(newMemory);
+            bitmap.Save(@"E:\Microsoft Visual Studio\Projects\SurvivalcraftTextureStudio\bin\x64\Debug\net5.0-windows\Cache\a.png", System.Drawing.Imaging.ImageFormat.Png);
+            return bitmap;
         }
 
         public static BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
@@ -72,7 +77,7 @@ namespace SurvivalcraftTextureStudio
             lock (bitmap)
             {
                 MemoryStream memory = new MemoryStream();
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                 memory.Position = 0;
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
