@@ -227,7 +227,7 @@
                             <Setter TargetName="ToolBarHeader" Property="DockPanel.Dock" Value="Top"/>
                             <Setter TargetName="OverflowGrid" Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter TargetName="OverflowGrid" Property="VerticalAlignment" Value="Bottom"/>
-                            <Setter TargetName="OverflowPopup" Property="Placement" Value="Right"/>
+                            <Setter TargetName="OverflowPopup" Property="Placement" Value="Bottom"/>
                             <Setter TargetName="MainPanelBorder" Property="Margin" Value="0,0,0,11"/>
                             <Setter Property="Background" Value="{DynamicResource MaterialDesignToolBarBackground}"/>
                         </Trigger>

@@ -27,9 +27,10 @@
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignDivider}">
                 <Grid.ColumnDefinitions>
@@ -37,32 +38,43 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="1" Width="Auto" Height="Auto" Margin="16"
+                <Button Grid.Column="0" Width="32" Height="32" Margin="6"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand"
+                        DockPanel.Dock="Top" Foreground="Gray"
+                        Style="{StaticResource MaterialDesignIconForegroundButton}">
+                    <md:PackIcon Width="16" Height="16" Kind="Close"/>
+                </Button>
+                <Border Grid.Column="1" Width="Auto" Height="Auto" Margin="20"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Effect="{StaticResource MaterialDesignShadowDepth3}"
                         RenderOptions.BitmapScalingMode="NearestNeighbor">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding PreviewingImage, IsAsync=True}" Stretch="Uniform"/>
                     </Border.Background>
                 </Border>
-                <Button Grid.Column="2" Width="32" Height="32" Margin="6"
-                        HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand"
-                        Foreground="Gray"
-                        Style="{StaticResource MaterialDesignIconForegroundButton}">
-                    <md:PackIcon Width="16" Height="16" Kind="Close"/>
-                </Button>
-                <StackPanel Grid.Column="2" Height="100" HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                    <ToolBarTray Width="59" Height="100" Orientation="Vertical">
-                        <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
-                            <Button ToolTip="逆时针">
-                                <md:PackIcon Kind="RotateLeft"/>
-                            </Button>
-                            <Button ToolTip="顺时针">
-                                <md:PackIcon Kind="RotateRight"/>
-                            </Button>
-                        </ToolBar>
-                    </ToolBarTray>
-                </StackPanel>
+                <ToolBarTray Grid.Column="2" Margin="0,24" HorizontalAlignment="Right"
+                             VerticalAlignment="Center" IsLocked="True" Orientation="Vertical">
+                    <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
+                        <Button ToolTip="更换">
+                            <md:PackIcon Kind="FileImage"/>
+                        </Button>
+                        <Button ToolTip="编辑">
+                            <md:PackIcon Kind="SquareEditOutline"/>
+                        </Button>
+                        <Button ToolTip="逆时针旋转">
+                            <md:PackIcon Kind="RotateLeft"/>
+                        </Button>
+                        <Button ToolTip="顺时针旋转">
+                            <md:PackIcon Kind="RotateRight"/>
+                        </Button>
+                        <Button ToolTip="水平翻转">
+                            <md:PackIcon Kind="ArrowExpandHorizontal"/>
+                        </Button>
+                        <Button ToolTip="垂直翻转">
+                            <md:PackIcon Kind="ArrowExpandVertical"/>
+                        </Button>
+                    </ToolBar>
+                </ToolBarTray>
             </Grid>
             <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch"
                           Style="{StaticResource MaterialDesignGridSplitter}"/>
@@ -77,67 +89,79 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </wpftk:VirtualizingItemsControl>
-        </Grid>
-        <Button x:Name="ExportBlocksTextureButton" Margin="32" HorizontalAlignment="Right"
-                VerticalAlignment="Bottom" md:ButtonProgressAssist.IsIndeterminate="True"
-                md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
-                ToolTip="导出"
-                Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
-            <Button.Style>
-                <Style BasedOn="{StaticResource MaterialDesignFloatingActionAccentButton}" TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                                        From="{StaticResource Primary200}"
-                                                        To="#f44336" Duration="0:0:0.4"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                                        From="#f44336"
-                                                        To="{StaticResource Primary200}"
-                                                        Duration="0:0:0.4"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-            <md:PackIcon Width="24" Height="24">
-                <md:PackIcon.Style>
-                    <Style BasedOn="{StaticResource {x:Type md:PackIcon}}" TargetType="md:PackIcon">
-                        <Setter Property="Kind" Value="Download"/>
+            <Button x:Name="ExportBlocksTextureButton" Grid.Row="2" Margin="32"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    md:ButtonProgressAssist.IsIndeterminate="True"
+                    md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsOperatingBlocksTexture}"
+                    ToolTip="导出"
+                    Command="{Binding Path=ExportBlocksTextureCommand, Mode=OneTime}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource MaterialDesignFloatingActionAccentButton}" TargetType="Button">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
-                                <Setter Property="Kind" Value="Check"/>
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
                             <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
-                                <Setter Property="Kind" Value="Close"/>
-                                <Setter Property="Foreground" Value="White"/>
                                 <DataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            From="{StaticResource Primary200}"
+                                                            To="#f44336" Duration="0:0:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
                                 </DataTrigger.EnterActions>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
-                                <Setter Property="Kind" Value="Download"/>
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
-                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            From="#f44336"
+                                                            To="{StaticResource Primary200}"
+                                                            Duration="0:0:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </md:PackIcon.Style>
-            </md:PackIcon>
-        </Button>
+                </Button.Style>
+                <md:PackIcon Width="24" Height="24">
+                    <md:PackIcon.Style>
+                        <Style BasedOn="{StaticResource {x:Type md:PackIcon}}" TargetType="md:PackIcon">
+                            <Setter Property="Kind" Value="Download"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
+                                    <Setter Property="Kind" Value="Check"/>
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsExportCanceled}" Value="True">
+                                    <Setter Property="Kind" Value="Close"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ExportButtonRecover}" Value="True">
+                                    <Setter Property="Kind" Value="Download"/>
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ExportButtonIconOpacityStoryboard}"/>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </md:PackIcon.Style>
+                </md:PackIcon>
+            </Button>
+            <Rectangle Grid.Row="3" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                       Fill="{DynamicResource MaterialDesignSelection}"/>
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <md:PackIcon Width="20" Height="20" Kind="ImageSizeSelectLarge"/>
+                <Slider x:Name="BlockSizeSlider" Width="140" Margin="12,0" IsSnapToTickEnabled="True"
+                        LargeChange="20" Maximum="200" Minimum="40" SmallChange="2"
+                        Ticks="40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200"
+                        Value="120"/>
+                <md:PackIcon Width="20" Height="20" Margin="0,0,24,0" Kind="ImageSizeSelectActual"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
