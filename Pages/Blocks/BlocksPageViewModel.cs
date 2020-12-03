@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -18,7 +19,6 @@ namespace SurvivalcraftTextureStudio
         public static BlocksPageViewModel BPVM;
         public string BlocksdataPath = System.Environment.CurrentDirectory + @"\Resources\BlocksdataFrom2.2.tsv";
         public int NowPerBlockSize = 32;
-        public PixelFormat NowPixelFormat = PixelFormat.Format32bppArgb;
 
         public static Dictionary<CultureInfo, string> MoreText = new Dictionary<CultureInfo, string>()
         {
@@ -40,7 +40,10 @@ namespace SurvivalcraftTextureStudio
                 IsOperatingBlocksTexture = true;
                 Task.Factory.StartNew(() =>
                 {
-                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Properties.Resources.OriginalBlocksTextureFrom2_2);
+                    MemoryStream memory = new MemoryStream();
+                    Properties.Resources.OriginalBlocksTextureFrom2_2.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                    memory.Position = 0;
+                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(memory,new PngDecoder()));
                     IsOperatingBlocksTexture = false;
                 });
             }
@@ -184,7 +187,7 @@ namespace SurvivalcraftTextureStudio
                 openFileDialog.DefaultExt = "png";
                 if (openFileDialog.ShowDialog().Value)
                 {
-                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)));
+                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)));
                 }
                 IsOperatingBlocksTexture = false;
             });
@@ -192,24 +195,22 @@ namespace SurvivalcraftTextureStudio
             ImportThread.Start();
         }
 
-        public void ImportBlocksTexture(string inputString, Bitmap inputBitmap)
+        public void ImportBlocksTexture(string inputString, Image inputImage)
         {
-            Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = GetBlockTexturesDictionaryFromStringAndBitmap(inputString, inputBitmap);
-            int NewPerBlockSize = inputBitmap.Width / 16;
-            PixelFormat NewPixelFormat = inputBitmap.PixelFormat;
+            Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = GetBlockTexturesDictionaryFromStringAndBitmap(inputString, inputImage);
+            int NewPerBlockSize = inputImage.Width / 16;
             lock (BlockTexturesDictionary)
             {
                 NowPerBlockSize = NewPerBlockSize;
-                NowPixelFormat = NewPixelFormat;
                 BlockTexturesDictionary = newBlockTexturesDictionary;
                 PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImage"));
             }
         }
 
-        public static Dictionary<int, BlockTextureInfo> GetBlockTexturesDictionaryFromStringAndBitmap(string inputString, Bitmap inputBitmap)
+        public static Dictionary<int, BlockTextureInfo> GetBlockTexturesDictionaryFromStringAndBitmap(string inputString, Image inputImage)
         {
             Dictionary<int, BlockTextureInfo> output = new Dictionary<int, BlockTextureInfo>();
-            int perBlockSize = inputBitmap.Width / 16;
+            int perBlockSize = inputImage.Width / 16;
             int[] baseInformationLocation = new int[3];
             Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();
             bool FirstLineReaded = false;
@@ -234,7 +235,7 @@ namespace SurvivalcraftTextureStudio
                             output.Add(index, new BlockTextureInfo(index)
                             {
                                 _Description = description,
-                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
+                                ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
                             });
                         }
                         else
@@ -249,7 +250,7 @@ namespace SurvivalcraftTextureStudio
                             {
                                 _Name = name,
                                 _Description = description,
-                                BitmapCache = ImageHelper.GetBlockBitmapFromTexture(inputBitmap, index, perBlockSize)
+                                ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
                             });
                         }
                     }
@@ -336,7 +337,7 @@ namespace SurvivalcraftTextureStudio
                     lock (block)
                     {
                         //block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), NowPerBlockSize, NowPerBlockSize);
-                        ChangeImage(new Bitmap(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), block);
+                        ChangeImage(Image.Load(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)), block);
                     }
                 }
                 IsOperatingBlocksTexture = false;
@@ -345,9 +346,9 @@ namespace SurvivalcraftTextureStudio
             ChangeImageThread.Start();
         }
 
-        public void ChangeImage(Bitmap bitmap, BlockTextureInfo block)
+        public void ChangeImage(Image image, BlockTextureInfo block)
         {
-            block.BitmapCache = ImageHelper.ResizeBitmapByImageSharp(bitmap, NowPerBlockSize, NowPerBlockSize);
+            block.ImageCache = ImageHelper.ResizeImage(image, NowPerBlockSize, NowPerBlockSize);
         }
 
         public void EditImage(BlockTextureInfo block)
@@ -363,12 +364,12 @@ namespace SurvivalcraftTextureStudio
                 string path;
                 lock (block)
                 {
-                    path = directory + block.Index + ".bmp";
+                    path = directory + block.Index + ".png";
                     if (!Directory.Exists(directory))
                     {
                         Directory.CreateDirectory(directory);
                     }
-                    block.BitmapCache.Save(path, ImageFormat.Bmp);
+                    block.ImageCache.Save(path,new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                 }
                 System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
                 info.FileName = "mspaint.exe";
@@ -392,17 +393,18 @@ namespace SurvivalcraftTextureStudio
             ExportButtonRecover = false;
             Thread ExportThread = new Thread(() =>
             {
-                Bitmap tempBitmap = new Bitmap(NowPerBlockSize * 16, NowPerBlockSize * 16, NowPixelFormat);
+                //Image tempImage = new Image(NowPerBlockSize * 16, NowPerBlockSize * 16);
+                Image tempImage = new Image<SixLabors.ImageSharp.PixelFormats.Argb32>(NowPerBlockSize * 16, NowPerBlockSize * 16);
                 lock (BlockTexturesDictionary)
                 {
-                    using (Graphics g = Graphics.FromImage(tempBitmap))
+                    for (int i = 0; i < 16; i++)
                     {
-                        for (int i = 0; i < 16; i++)
+                        for (int j = 0; j < 16; j++)
                         {
-                            for (int j = 0; j < 16; j++)
+                            tempImage.Mutate(im =>
                             {
-                                g.DrawImage(BlockTexturesDictionary[i * 16 + j].BitmapCache, j * NowPerBlockSize, i * NowPerBlockSize);
-                            }
+                                im.DrawImage(BlockTexturesDictionary[i * 16 + j].ImageCache, new Point(new Size(j * NowPerBlockSize, i * NowPerBlockSize)),1);
+                            });
                         }
                     }
                 }
@@ -417,7 +419,7 @@ namespace SurvivalcraftTextureStudio
                 };
                 if (saveFileDialog.ShowDialog().Value)
                 {
-                    tempBitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+                    tempImage.Save(saveFileDialog.FileName, new PngEncoder());
                     IsExportComplete = true;
                 }
                 else

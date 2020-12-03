@@ -1,11 +1,10 @@
 using Prism.Commands;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using SixLabors.ImageSharp;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -82,9 +81,9 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public BitmapImage Texture
+        public System.Windows.Media.Imaging.BitmapImage Texture
         {
-            get { return ImageHelper.Bitmap2BitmapImage(BitmapCache); }
+            get { return ImageHelper.Bitmap2BitmapImage(ImageCache); }
         }
 
         public bool IsTextureExist
@@ -92,17 +91,17 @@ namespace SurvivalcraftTextureStudio
             get { return _Name is null; }
         }
 
-        public Bitmap _BitmapCache;
+        public Image _ImageCache;
 
-        public Bitmap BitmapCache
+        public Image ImageCache
         {
-            get { return _BitmapCache; }
+            get { return _ImageCache; }
             set
             {
-                if (_BitmapCache != value)
+                if (_ImageCache != value)
                 {
-                    _BitmapCache = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("BitmapCache"));
+                    _ImageCache = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("ImageCache"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Texture"));
                 }
             }
