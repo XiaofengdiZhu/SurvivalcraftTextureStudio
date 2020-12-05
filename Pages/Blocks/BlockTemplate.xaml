@@ -101,12 +101,12 @@
                                             <RectangleGeometry Rect="0,0,2,2"/>
                                         </GeometryDrawing.Geometry>
                                     </GeometryDrawing>
-                                    <GeometryDrawing Brush="#FFBFBFBF">
+                                    <GeometryDrawing Brush="#cccccc">
                                         <GeometryDrawing.Geometry>
                                             <RectangleGeometry Rect="0,0,1,1"/>
                                         </GeometryDrawing.Geometry>
                                     </GeometryDrawing>
-                                    <GeometryDrawing Brush="#FFBFBFBF">
+                                    <GeometryDrawing Brush="#cccccc">
                                         <GeometryDrawing.Geometry>
                                             <RectangleGeometry Rect="1,1,1,1"/>
                                         </GeometryDrawing.Geometry>

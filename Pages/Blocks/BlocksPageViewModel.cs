@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -6,9 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -43,7 +43,7 @@ namespace SurvivalcraftTextureStudio
                     MemoryStream memory = new MemoryStream();
                     Properties.Resources.OriginalBlocksTextureFrom2_2.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                     memory.Position = 0;
-                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(memory,new PngDecoder()));
+                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(memory, new PngDecoder()));
                     IsOperatingBlocksTexture = false;
                 });
             }
@@ -103,6 +103,7 @@ namespace SurvivalcraftTextureStudio
             });
             ClosePreviewImageCommand = new AnotherCommandImplementation(o =>
             {
+                BlocksPage.BP.PreviewGridRowDefinition.Height = new System.Windows.GridLength(BlocksPage.BP.PreviewGridRowDefinition.ActualHeight, System.Windows.GridUnitType.Pixel);
                 IsPreviewing = false;
             });
         }
@@ -375,7 +376,7 @@ namespace SurvivalcraftTextureStudio
                     {
                         Directory.CreateDirectory(directory);
                     }
-                    block.ImageCache.Save(path,new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+                    block.ImageCache.Save(path, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                 }
                 System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
                 info.FileName = "mspaint.exe";
@@ -409,7 +410,7 @@ namespace SurvivalcraftTextureStudio
                         {
                             tempImage.Mutate(im =>
                             {
-                                im.DrawImage(BlockTexturesDictionary[i * 16 + j].ImageCache, new Point(new Size(j * NowPerBlockSize, i * NowPerBlockSize)),1);
+                                im.DrawImage(BlockTexturesDictionary[i * 16 + j].ImageCache, new Point(new Size(j * NowPerBlockSize, i * NowPerBlockSize)), 1);
                             });
                         }
                     }
@@ -444,7 +445,9 @@ namespace SurvivalcraftTextureStudio
             ExportThread.SetApartmentState(ApartmentState.STA);
             ExportThread.Start();
         }
+
         public bool _IsPreviewing = false;
+
         public bool IsPreviewing
         {
             get { return _IsPreviewing; }
@@ -474,7 +477,9 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+
         public int _BlockSizeSliderValue = 120;
+
         public int BlockSizeSliderValue
         {
             get { return _BlockSizeSliderValue; }
@@ -487,6 +492,7 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
+
         public BlockTextureInfo PreviewingBlockTextureInfo
         {
             get

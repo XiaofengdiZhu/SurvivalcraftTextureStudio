@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SurvivalcraftTextureStudio.BlocksPage"
+<UserControl x:Class="SurvivalcraftTextureStudio.BlocksPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -37,7 +37,7 @@
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard FillBehavior="Stop">
-                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" From="0" To="240" Duration="0:0:0.6">
+                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" From="0" Duration="0:0:0.6">
                                                     <local:GridLengthAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </local:GridLengthAnimation.EasingFunction>
@@ -124,12 +124,12 @@
                                                     <RectangleGeometry Rect="0,0,2,2"/>
                                                 </GeometryDrawing.Geometry>
                                             </GeometryDrawing>
-                                            <GeometryDrawing Brush="#FFBFBFBF">
+                                            <GeometryDrawing Brush="#cccccc">
                                                 <GeometryDrawing.Geometry>
                                                     <RectangleGeometry Rect="0,0,1,1"/>
                                                 </GeometryDrawing.Geometry>
                                             </GeometryDrawing>
-                                            <GeometryDrawing Brush="#FFBFBFBF">
+                                            <GeometryDrawing Brush="#cccccc">
                                                 <GeometryDrawing.Geometry>
                                                     <RectangleGeometry Rect="1,1,1,1"/>
                                                 </GeometryDrawing.Geometry>
