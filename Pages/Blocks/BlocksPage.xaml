@@ -17,6 +17,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="BlockTemplate.xaml"/>
                 <ResourceDictionary Source="MaterialDesignTheme.ToolBar.xaml"/>
+                <ResourceDictionary Source="MaterialDesignTheme.RadioButton.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:FlipBooleanConverter x:Key="flipBooleanConverter"/>
             <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
@@ -179,9 +180,7 @@
                         <Button ToolTip="编辑" Command="{Binding EditImageCommand, Mode=OneTime}" CommandParameter="{Binding PreviewingBlockTextureInfo}">
                             <md:PackIcon Kind="SquareEditOutline"/>
                         </Button>
-                        <Button Click="RotateLeftButton_Click" ToolTip="逆时针旋转"
-                                Command="{Binding RotatePreviewImageCommand, Mode=OneTime}"
-                                CommandParameter="-1">
+                        <Button Click="RotateLeftButton_Click" ToolTip="逆时针旋转">
                             <md:PackIcon Kind="RotateLeft"/>
                         </Button>
                         <Button Click="RotateRightButton_Click" ToolTip="顺时针旋转">
@@ -225,7 +224,10 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                                            From="{StaticResource Primary200}"
+                                                            From="{StaticResource Accent400}"
+                                                            To="#f44336" Duration="0:0:0.4"/>
+                                            <ColorAnimation Storyboard.TargetProperty="(Button.BorderBrush).(SolidColorBrush.Color)"
+                                                            From="{StaticResource Accent400}"
                                                             To="#f44336" Duration="0:0:0.4"/>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -235,7 +237,11 @@
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                                             From="#f44336"
-                                                            To="{StaticResource Primary200}"
+                                                            To="{StaticResource Accent400}"
+                                                            Duration="0:0:0.4"/>
+                                            <ColorAnimation Storyboard.TargetProperty="(Button.BorderBrush).(SolidColorBrush.Color)"
+                                                            From="#f44336"
+                                                            To="{StaticResource Accent400}"
                                                             Duration="0:0:0.4"/>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -246,7 +252,7 @@
                 </Button.Style>
                 <md:PackIcon Width="24" Height="24">
                     <md:PackIcon.Style>
-                        <Style BasedOn="{StaticResource {x:Type md:PackIcon}}" TargetType="md:PackIcon">
+                        <Style TargetType="md:PackIcon">
                             <Setter Property="Kind" Value="Download"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsExportComplete}" Value="True">
@@ -273,17 +279,32 @@
                     </md:PackIcon.Style>
                 </md:PackIcon>
             </Button>
-            <Rectangle Grid.Row="3" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                       Fill="{DynamicResource MaterialDesignSelection}"/>
-            <StackPanel Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                <md:PackIcon Width="20" Height="20" Kind="ImageSizeSelectLarge"/>
-                <Slider x:Name="BlockSizeSlider" Width="140" Margin="12,0" IsSnapToTickEnabled="True"
-                        LargeChange="20" Maximum="200" Minimum="40" SmallChange="10"
-                        TickFrequency="10"
-                        Value="{Binding BlockSizeSliderValue, Mode=TwoWay}"/>
-                <md:PackIcon Width="20" Height="20" Margin="0,0,24,0" Kind="ImageSizeSelectActual"/>
-            </StackPanel>
+            <DockPanel Grid.Row="3" Background="{DynamicResource MaterialDesignToolBarBackground}">
+                <Rectangle Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                           DockPanel.Dock="Top"
+                           Fill="{DynamicResource MaterialDesignSelection}"/>
+                <RadioButton Height="30" Margin="0" GroupName="DisplayMode" IsEnabled="False"
+                             Style="{StaticResource MyMaterialDesignChoiceChipRadioButton}"
+                             ToolTip="列表模式">
+                    <md:PackIcon Width="18" Height="18" Kind="FormatListBulletedSquare"/>
+                </RadioButton>
+                <RadioButton Height="30" Margin="0" Cursor="Hand" GroupName="DisplayMode"
+                             IsChecked="True"
+                             Style="{StaticResource MyMaterialDesignChoiceChipRadioButton}"
+                             ToolTip="缩略图模式">
+                    <md:PackIcon Width="18" Height="18" Kind="ViewGridOutline"/>
+                </RadioButton>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+                    <md:PackIcon Width="20" Height="20" Kind="ImageSizeSelectLarge"/>
+                    <Slider x:Name="BlockSizeSlider" Width="140" Margin="12,0" IsSnapToTickEnabled="True"
+                            LargeChange="20" Maximum="200" Minimum="40" SmallChange="10"
+                            TickFrequency="10"
+                            ToolTip="{Binding BlockSizeSliderValue}"
+                            Value="{Binding BlockSizeSliderValue, Mode=TwoWay}"/>
+                    <md:PackIcon Width="20" Height="20" Margin="0,0,24,0" Kind="ImageSizeSelectActual"/>
+                </StackPanel>
+            </DockPanel>
         </Grid>
     </Grid>
 </UserControl>
