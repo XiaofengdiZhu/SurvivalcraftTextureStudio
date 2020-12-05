@@ -27,15 +27,17 @@
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0">
+                <RowDefinition x:Name="PreviewGridRowDefinition">
                     <RowDefinition.Style>
                         <Style>
+                            <Setter Property="RowDefinition.Height" Value="0"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="240"/>
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
-                                            <Storyboard>
-                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" From="0" To="200" Duration="0:0:0.6">
+                                            <Storyboard FillBehavior="Stop">
+                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" From="0" To="240" Duration="0:0:0.6">
                                                     <local:GridLengthAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </local:GridLengthAnimation.EasingFunction>
@@ -59,7 +61,7 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                <RowDefinition Height="3"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
@@ -76,7 +78,6 @@
                     <Button.Style>
                         <Style BasedOn="{StaticResource MaterialDesignIconForegroundButton}" TargetType="Button">
                             <Setter Property="Opacity" Value="0"/>
-                            <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
                                     <DataTrigger.EnterActions>
@@ -87,9 +88,6 @@
                                                         <ExponentialEase EasingMode="EaseOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
-                                                </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>
@@ -101,9 +99,6 @@
                                                         <ExponentialEase EasingMode="EaseIn"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:4" Value="{x:Static Visibility.Collapsed}"/>
-                                                </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
@@ -148,7 +143,8 @@
                 </ToolBarTray>
             </Grid>
             <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch"
-                          Style="{StaticResource MaterialDesignGridSplitter}"/>
+                          Style="{StaticResource MaterialDesignGridSplitter}"
+                          Visibility="{Binding IsPreviewing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <wpftk:VirtualizingItemsControl x:Name="wrap" Grid.Row="2"
                                             ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
                                             VirtualizingPanel.CacheLength="24,24" VirtualizingPanel.CacheLengthUnit="Item"
