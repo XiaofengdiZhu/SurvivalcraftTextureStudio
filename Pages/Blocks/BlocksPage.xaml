@@ -108,23 +108,53 @@
                     </Button.Style>
                     <md:PackIcon Width="16" Height="16" Kind="Close"/>
                 </Button>
-                <Border Grid.Column="1" Width="Auto" Height="Auto" Margin="20"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Effect="{StaticResource MaterialDesignShadowDepth3}"
-                        RenderOptions.BitmapScalingMode="NearestNeighbor">
-                    <Border.Background>
-                        <ImageBrush ImageSource="{Binding PreviewingImage, IsAsync=True}" Stretch="Uniform"/>
-                    </Border.Background>
-                </Border>
+                <Grid Grid.Column="1" SizeChanged="Grid_SizeChanged">
+                    <Border x:Name="PreviewImageBorder" Width="Auto" Height="Auto"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Effect="{StaticResource MaterialDesignShadowDepth3}"
+                            RenderOptions.BitmapScalingMode="NearestNeighbor">
+                        <Border.Background>
+                            <DrawingBrush Stretch="Uniform" TileMode="Tile" Viewport="0,0,0.125,0.125"
+                                          ViewportUnits="RelativeToBoundingBox">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <DrawingGroup.Children>
+                                            <GeometryDrawing Brush="White">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="0,0,2,2"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing Brush="#FFBFBFBF">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="0,0,1,1"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing Brush="#FFBFBFBF">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="1,1,1,1"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup.Children>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Border.Background>
+                        <Border RenderOptions.BitmapScalingMode="NearestNeighbor">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding PreviewingBlockTextureInfo.Texture, IsAsync=True}" Stretch="Uniform"/>
+                            </Border.Background>
+                        </Border>
+                    </Border>
+                </Grid>
                 <ToolBarTray Grid.Column="2" Margin="0,24" HorizontalAlignment="Right"
                              VerticalAlignment="Center"
                              IsEnabled="{Binding IsPreviewing}"
                              IsLocked="True" Orientation="Vertical">
                     <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
-                        <Button ToolTip="更换">
+                        <Button ToolTip="更换" Command="{Binding ChangeImageCommand, Mode=OneTime}" CommandParameter="{Binding PreviewingBlockTextureInfo}">
                             <md:PackIcon Kind="FileImage"/>
                         </Button>
-                        <Button ToolTip="编辑">
+                        <Button ToolTip="编辑" Command="{Binding EditImageCommand, Mode=OneTime}" CommandParameter="{Binding PreviewingBlockTextureInfo}">
                             <md:PackIcon Kind="SquareEditOutline"/>
                         </Button>
                         <Button ToolTip="逆时针旋转">

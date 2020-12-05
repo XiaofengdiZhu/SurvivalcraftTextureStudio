@@ -470,7 +470,7 @@ namespace SurvivalcraftTextureStudio
                     _PreviewingImageIndex = value;
                     PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImageIndex"));
                     PropertyChanged(this, new PropertyChangedEventArgs("IsPreviewing"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImage"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("PreviewingBlockTextureInfo"));
                 }
             }
         }
@@ -487,15 +487,14 @@ namespace SurvivalcraftTextureStudio
                 }
             }
         }
-
-        public System.Windows.Media.Imaging.BitmapImage PreviewingImage
+        public BlockTextureInfo PreviewingBlockTextureInfo
         {
             get
             {
-                if (BlockTexturesDictionary is null || BlockTexturesDictionary.Count == 0|| PreviewingImageIndex<0) { return null; }
+                if (BlockTexturesDictionary is null || BlockTexturesDictionary.Count == 0 || PreviewingImageIndex < 0) { return null; }
                 else
                 {
-                    return BlockTexturesDictionary[PreviewingImageIndex].Texture;
+                    return BlockTexturesDictionary[PreviewingImageIndex];
                 }
             }
         }

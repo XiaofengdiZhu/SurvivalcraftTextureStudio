@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -13,6 +13,18 @@ namespace SurvivalcraftTextureStudio
         {
             BP = this;
             InitializeComponent();
+        }
+
+        private void Grid_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            Grid grid = (Grid)sender;
+            double gridWidth = grid.ActualWidth;
+            double gridHeight = grid.ActualHeight;
+            double newLength;
+            newLength = (gridWidth >= gridHeight?gridHeight:gridWidth) - 40;
+            if (newLength < 0) newLength = 0;
+            PreviewImageBorder.Width = newLength;
+            PreviewImageBorder.Height = newLength;
         }
     }
 }
