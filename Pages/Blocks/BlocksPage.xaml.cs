@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -8,11 +9,17 @@ namespace SurvivalcraftTextureStudio
     public partial class BlocksPage : UserControl
     {
         public static BlocksPage BP;
+        Storyboard RotatePreviewingImageStoryboard;
+        Storyboard ScaleXPreviewingImageStoryboard;
+        Storyboard ScaleYPreviewingImageStoryboard;
 
         public BlocksPage()
         {
             BP = this;
             InitializeComponent();
+            RotatePreviewingImageStoryboard = (Storyboard)this.FindResource("RotatePreviewingImageStoryboard");
+            ScaleXPreviewingImageStoryboard = (Storyboard)this.FindResource("ScaleXPreviewingImageStoryboard");
+            ScaleYPreviewingImageStoryboard = (Storyboard)this.FindResource("ScaleYPreviewingImageStoryboard");
         }
 
         private void Grid_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
@@ -25,6 +32,26 @@ namespace SurvivalcraftTextureStudio
             if (newLength < 0) newLength = 0;
             PreviewImageBorder.Width = newLength;
             PreviewImageBorder.Height = newLength;
+        }
+        private void RotateLeftButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((DoubleAnimation)RotatePreviewingImageStoryboard.Children[0]).To = PreviewingImageRotateTransform.Angle - 90;
+            RotatePreviewingImageStoryboard.Begin(this);
+        }
+        private void RotateRightButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((DoubleAnimation)RotatePreviewingImageStoryboard.Children[0]).To = PreviewingImageRotateTransform.Angle + 90;
+            RotatePreviewingImageStoryboard.Begin(this);
+        }
+        private void FlipXButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((DoubleAnimation)ScaleXPreviewingImageStoryboard.Children[0]).To = -PreviewingImageScaleTransform.ScaleX;
+            ScaleXPreviewingImageStoryboard.Begin(this);
+        }
+        private void FlipYButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((DoubleAnimation)ScaleYPreviewingImageStoryboard.Children[0]).To = -PreviewingImageScaleTransform.ScaleY;
+            ScaleYPreviewingImageStoryboard.Begin(this);
         }
     }
 }

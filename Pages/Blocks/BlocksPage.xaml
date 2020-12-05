@@ -22,6 +22,21 @@
             <Storyboard x:Key="ExportButtonIconOpacityStoryboard">
                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
             </Storyboard>
+            <Storyboard x:Key="RotatePreviewingImageStoryboard">
+                <DoubleAnimation Storyboard.TargetName="PreviewImageBorder"
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)"
+                                 To="90" Duration="0:0:0.2"/>
+            </Storyboard>
+            <Storyboard x:Key="ScaleXPreviewingImageStoryboard">
+                <DoubleAnimation Storyboard.TargetName="PreviewImageBorder"
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"
+                                 To="1" Duration="0:0:0.2"/>
+            </Storyboard>
+            <Storyboard x:Key="ScaleYPreviewingImageStoryboard">
+                <DoubleAnimation Storyboard.TargetName="PreviewImageBorder"
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"
+                                 To="1" Duration="0:0:0.2"/>
+            </Storyboard>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
@@ -81,7 +96,7 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
                                     <DataTrigger.EnterActions>
-                                        <BeginStoryboard x:Name="testtest">
+                                        <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4">
                                                     <DoubleAnimation.EasingFunction>
@@ -110,9 +125,10 @@
                 </Button>
                 <Grid Grid.Column="1" SizeChanged="Grid_SizeChanged">
                     <Border x:Name="PreviewImageBorder" Width="Auto" Height="Auto"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="-100"
                             Effect="{StaticResource MaterialDesignShadowDepth3}"
-                            RenderOptions.BitmapScalingMode="NearestNeighbor">
+                            RenderOptions.BitmapScalingMode="NearestNeighbor"
+                            RenderTransformOrigin="0.5,0.5">
                         <Border.Background>
                             <DrawingBrush Stretch="Uniform" TileMode="Tile" Viewport="0,0,0.125,0.125"
                                           ViewportUnits="RelativeToBoundingBox">
@@ -139,6 +155,12 @@
                                 </DrawingBrush.Drawing>
                             </DrawingBrush>
                         </Border.Background>
+                        <Border.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform x:Name="PreviewingImageRotateTransform" Angle="0"/>
+                                <ScaleTransform x:Name="PreviewingImageScaleTransform" ScaleX="1" ScaleY="1"/>
+                            </TransformGroup>
+                        </Border.RenderTransform>
                         <Border RenderOptions.BitmapScalingMode="NearestNeighbor">
                             <Border.Background>
                                 <ImageBrush ImageSource="{Binding PreviewingBlockTextureInfo.Texture, IsAsync=True}" Stretch="Uniform"/>
@@ -157,16 +179,18 @@
                         <Button ToolTip="编辑" Command="{Binding EditImageCommand, Mode=OneTime}" CommandParameter="{Binding PreviewingBlockTextureInfo}">
                             <md:PackIcon Kind="SquareEditOutline"/>
                         </Button>
-                        <Button ToolTip="逆时针旋转">
+                        <Button Click="RotateLeftButton_Click" ToolTip="逆时针旋转"
+                                Command="{Binding RotatePreviewImageCommand, Mode=OneTime}"
+                                CommandParameter="-1">
                             <md:PackIcon Kind="RotateLeft"/>
                         </Button>
-                        <Button ToolTip="顺时针旋转">
+                        <Button Click="RotateRightButton_Click" ToolTip="顺时针旋转">
                             <md:PackIcon Kind="RotateRight"/>
                         </Button>
-                        <Button ToolTip="水平翻转">
+                        <Button Click="FlipXButton_Click" ToolTip="水平翻转">
                             <md:PackIcon Kind="ArrowExpandHorizontal"/>
                         </Button>
-                        <Button ToolTip="垂直翻转">
+                        <Button Click="FlipYButton_Click" ToolTip="垂直翻转">
                             <md:PackIcon Kind="ArrowExpandVertical"/>
                         </Button>
                     </ToolBar>
@@ -176,6 +200,7 @@
                           Style="{StaticResource MaterialDesignGridSplitter}"
                           Visibility="{Binding IsPreviewing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <wpftk:VirtualizingItemsControl x:Name="wrap" Grid.Row="2"
+                                            Background="{DynamicResource MaterialDesignPaper}"
                                             ItemsSource="{Binding BlockTexturesDictionary.Values, Mode=OneWay}"
                                             VirtualizingPanel.CacheLength="24,24" VirtualizingPanel.CacheLengthUnit="Item"
                                             VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
