@@ -99,6 +99,11 @@ namespace SurvivalcraftTextureStudio
             PreviewImageCommand = new AnotherCommandImplementation(o =>
             {
                 PreviewingImageIndex = ((BlockTextureInfo)o).Index;
+                IsPreviewing = true;
+            });
+            ClosePreviewImageCommand = new AnotherCommandImplementation(o =>
+            {
+                IsPreviewing = false;
             });
         }
 
@@ -109,6 +114,7 @@ namespace SurvivalcraftTextureStudio
 
         public ICommand ExportBlocksTextureCommand { get; set; }
         public ICommand PreviewImageCommand { get; set; }
+        public ICommand ClosePreviewImageCommand { get; set; }
         public bool _IsOperatingBlocksTexture = false;
 
         public bool IsOperatingBlocksTexture
@@ -438,10 +444,18 @@ namespace SurvivalcraftTextureStudio
             ExportThread.SetApartmentState(ApartmentState.STA);
             ExportThread.Start();
         }
-
+        public bool _IsPreviewing = false;
         public bool IsPreviewing
         {
-            get { return PreviewingImageIndex != -1; }
+            get { return _IsPreviewing; }
+            set
+            {
+                if (_IsPreviewing != value)
+                {
+                    _IsPreviewing = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsPreviewing"));
+                }
+            }
         }
 
         public int _PreviewingImageIndex = -1;
@@ -455,6 +469,7 @@ namespace SurvivalcraftTextureStudio
                 {
                     _PreviewingImageIndex = value;
                     PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImageIndex"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsPreviewing"));
                     PropertyChanged(this, new PropertyChangedEventArgs("PreviewingImage"));
                 }
             }

@@ -27,7 +27,38 @@
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="0">
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" From="0" To="200" Duration="0:0:0.6">
+                                                    <local:GridLengthAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </local:GridLengthAnimation.EasingFunction>
+                                                </local:GridLengthAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <local:GridLengthAnimation Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.4">
+                                                    <local:GridLengthAnimation.EasingFunction>
+                                                        <CircleEase EasingMode="EaseOut"/>
+                                                    </local:GridLengthAnimation.EasingFunction>
+                                                </local:GridLengthAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="32"/>
@@ -41,7 +72,45 @@
                 <Button Grid.Column="0" Width="32" Height="32" Margin="6"
                         HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand"
                         DockPanel.Dock="Top" Foreground="Gray"
-                        Style="{StaticResource MaterialDesignIconForegroundButton}">
+                        Command="{Binding Path=ClosePreviewImageCommand, Mode=OneTime}">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MaterialDesignIconForegroundButton}" TargetType="Button">
+                            <Setter Property="Opacity" Value="0"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard x:Name="testtest">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <ExponentialEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.4">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <ExponentialEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:4" Value="{x:Static Visibility.Collapsed}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                     <md:PackIcon Width="16" Height="16" Kind="Close"/>
                 </Button>
                 <Border Grid.Column="1" Width="Auto" Height="Auto" Margin="20"
@@ -53,7 +122,9 @@
                     </Border.Background>
                 </Border>
                 <ToolBarTray Grid.Column="2" Margin="0,24" HorizontalAlignment="Right"
-                             VerticalAlignment="Center" IsLocked="True" Orientation="Vertical">
+                             VerticalAlignment="Center"
+                             IsEnabled="{Binding IsPreviewing}"
+                             IsLocked="True" Orientation="Vertical">
                     <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
                         <Button ToolTip="更换">
                             <md:PackIcon Kind="FileImage"/>
