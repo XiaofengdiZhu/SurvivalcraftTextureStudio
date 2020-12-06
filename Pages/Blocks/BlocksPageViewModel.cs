@@ -1,4 +1,4 @@
-﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 using System.Collections.Generic;
@@ -67,9 +67,9 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public Dictionary<int, BlockTextureInfo> _BlockTexturesDictionary = new Dictionary<int, BlockTextureInfo>();
+        public ObservableDictionary<int, BlockTextureInfo> _BlockTexturesDictionary = new ObservableDictionary<int, BlockTextureInfo>();
 
-        public Dictionary<int, BlockTextureInfo> BlockTexturesDictionary
+        public ObservableDictionary<int, BlockTextureInfo> BlockTexturesDictionary
         {
             get { return _BlockTexturesDictionary; }
             set
@@ -107,8 +107,6 @@ namespace SurvivalcraftTextureStudio
                 IsPreviewing = false;
             });
         }
-
-        //public List<BlockTextureInfo> BlockTextures { get; set; }
         public ICommand ChangeImageCommand { get; set; }
 
         public ICommand EditImageCommand { get; set; }
@@ -204,7 +202,7 @@ namespace SurvivalcraftTextureStudio
 
         public void ImportBlocksTexture(string inputString, Image inputImage)
         {
-            Dictionary<int, BlockTextureInfo> newBlockTexturesDictionary = GetBlockTexturesDictionaryFromStringAndBitmap(inputString, inputImage);
+            ObservableDictionary<int, BlockTextureInfo> newBlockTexturesDictionary = GetBlockTexturesDictionaryFromStringAndBitmap(inputString, inputImage);
             int NewPerBlockSize = inputImage.Width / 16;
             lock (BlockTexturesDictionary)
             {
@@ -214,9 +212,9 @@ namespace SurvivalcraftTextureStudio
             }
         }
 
-        public static Dictionary<int, BlockTextureInfo> GetBlockTexturesDictionaryFromStringAndBitmap(string inputString, Image inputImage)
+        public static ObservableDictionary<int, BlockTextureInfo> GetBlockTexturesDictionaryFromStringAndBitmap(string inputString, Image inputImage)
         {
-            Dictionary<int, BlockTextureInfo> output = new Dictionary<int, BlockTextureInfo>();
+            ObservableDictionary<int, BlockTextureInfo> output = new ObservableDictionary<int, BlockTextureInfo>();
             int perBlockSize = inputImage.Width / 16;
             int[] baseInformationLocation = new int[3];
             Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();

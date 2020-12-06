@@ -120,9 +120,10 @@
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Texture, IsAsync=True}" Stretch="Uniform"/>
                     </Border.Background>
-                    <Grid Opacity="0">
+                    <Grid>
                         <Grid.Style>
                             <Style>
+                                <Setter Property="Grid.Opacity" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsFocused}" Value="True">
                                         <DataTrigger.EnterActions>
