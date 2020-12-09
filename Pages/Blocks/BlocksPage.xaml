@@ -43,13 +43,13 @@
     <Grid IsEnabled="{Binding IsOperatingBlocksTexture, Converter={StaticResource flipBooleanConverter}}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="PreviewGridRowDefinition">
+                <RowDefinition x:Name="PreviewGridRowDefinition" MinHeight="0">
                     <RowDefinition.Style>
                         <Style>
                             <Setter Property="RowDefinition.Height" Value="0"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="240"/>
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard FillBehavior="Stop">
@@ -78,8 +78,8 @@
                     </RowDefinition.Style>
                 </RowDefinition>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="2*" MinHeight="60"/>
+                <RowDefinition Height="32" MinHeight="32"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignDivider}">
                 <Grid.ColumnDefinitions>
@@ -195,7 +195,8 @@
                     </ToolBar>
                 </ToolBarTray>
             </Grid>
-            <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch"
+            <GridSplitter Grid.Row="1" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                          ResizeBehavior="PreviousAndNext"
                           Style="{StaticResource MaterialDesignGridSplitter}"
                           Visibility="{Binding IsPreviewing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <wpftk:VirtualizingItemsControl x:Name="wrap" Grid.Row="2"
@@ -298,7 +299,7 @@
                             Orientation="Horizontal">
                     <md:PackIcon Width="20" Height="20" Kind="ImageSizeSelectLarge"/>
                     <Slider x:Name="BlockSizeSlider" Width="140" Margin="12,0" IsSnapToTickEnabled="True"
-                            LargeChange="20" Maximum="200" Minimum="40" SmallChange="10"
+                            LargeChange="20" Maximum="200" Minimum="100" SmallChange="10"
                             TickFrequency="10"
                             ToolTip="{Binding BlockSizeSliderValue}"
                             Value="{Binding BlockSizeSliderValue, Mode=TwoWay}"/>

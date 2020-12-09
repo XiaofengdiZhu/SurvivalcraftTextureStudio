@@ -62,7 +62,7 @@
                     Margin="8"
                     ToolTip="{Binding Description}"
                     ToolTipService.InitialShowDelay="1000" ToolTipService.Placement="MousePoint">
-            <Border Height="{Binding Path=Width, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type StackPanel}}, Mode=OneWay}"
+            <Border Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.BlockSizeSliderValue, Mode=OneWay}"
                     CornerRadius="12"
                     FocusVisualStyle="{x:Null}"
                     Focusable="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
@@ -155,7 +155,8 @@
                             </Style>
                         </Grid.Style>
                         <Border Background="#80000000" CornerRadius="12"/>
-                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical"
+                        <WrapPanel Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Orientation="Vertical"
                                    Visibility="{Binding IsTextureExist, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}">
                             <Button Style="{StaticResource BlockButton}"
                                     ToolTip="预览"
