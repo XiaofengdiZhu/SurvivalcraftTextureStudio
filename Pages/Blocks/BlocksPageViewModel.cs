@@ -1,6 +1,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -35,20 +36,21 @@ namespace SurvivalcraftTextureStudio
         public BlocksPageViewModel()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (BlockTexturesDictionary.Count == 0)
-            {
-                IsOperatingBlocksTexture = true;
-                Task.Factory.StartNew(() =>
-                {
-                    MemoryStream memory = new MemoryStream();
-                    Properties.Resources.OriginalBlocksTextureFrom2_2.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                    memory.Position = 0;
-                    ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(memory, new PngDecoder()));
-                    IsOperatingBlocksTexture = false;
-                });
-            }
             BPVM = this;
             InitiateCommands();
+        }
+
+        public void InitiateBlockTexturesDictionary()
+        {
+            IsOperatingBlocksTexture = true;
+            Task.Factory.StartNew(() =>
+            {
+                MemoryStream memory = new MemoryStream();
+                Properties.Resources.OriginalBlocksTextureFrom2_2.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+                ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(memory, new PngDecoder()));
+                IsOperatingBlocksTexture = false;
+            });
         }
 
         public int _BlockIndexOnFocus;
@@ -107,6 +109,7 @@ namespace SurvivalcraftTextureStudio
                 IsPreviewing = false;
             });
         }
+
         public ICommand ChangeImageCommand { get; set; }
 
         public ICommand EditImageCommand { get; set; }
@@ -218,106 +221,101 @@ namespace SurvivalcraftTextureStudio
             int perBlockSize = inputImage.Width / 16;
             int[] baseInformationLocation = new int[3];
             Dictionary<CultureInfo, int[]> otherInformationLocation = new Dictionary<CultureInfo, int[]>();
-            bool FirstLineReaded = false;
-            foreach (string block in inputString.Split('\n'))
+            string[] lines = inputString.Split('\n');
+            string firstLine = lines[0];
+            int i = 0;
+            foreach (string title in firstLine.Split('\t'))
             {
-                if (FirstLineReaded)
+                if (title == "Index")
                 {
-                    string[] str = block.Split('\t');
-                    if (str.Length > 3 && str.Length % 2 == 1)
-                    {
-                        int index = int.Parse(str[baseInformationLocation[0]]);
-                        int row = index / 16 + 1;
-                        int colum = index % 16 + 1;
-                        bool isNull = str[baseInformationLocation[1]].ToLower() == "true";
-                        Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
-                        if (isNull)
-                        {
-                            foreach (var a in otherInformationLocation)
-                            {
-                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum));
-                            }
-                            output.Add(index, new BlockTextureInfo(index)
-                            {
-                                _Description = description,
-                                ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
-                            });
-                        }
-                        else
-                        {
-                            Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
-                            foreach (var a in otherInformationLocation)
-                            {
-                                name.Add(a.Key, str[a.Value[0]]);
-                                description.Add(a.Key, string.Format(LocationText[a.Key], row, colum) + "\n" + (str[a.Value[1]].Length == 0 ? str[a.Value[0]] : str[a.Value[1]]) + (str[baseInformationLocation[2]].ToLower() == "true" ? MoreText[a.Key] : ""));
-                            }
-                            output.Add(index, new BlockTextureInfo(index)
-                            {
-                                _Name = name,
-                                _Description = description,
-                                ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
-                            });
-                        }
-                    }
+                    baseInformationLocation[0] = i;
+                }
+                else if (title == "IsNull")
+                {
+                    baseInformationLocation[1] = i;
+                }
+                else if (title == "IsMore")
+                {
+                    baseInformationLocation[2] = i;
                 }
                 else
                 {
-                    FirstLineReaded = true;
-                    int i = 0;
-                    foreach (string title in block.Split('\t'))
+                    string[] str = title.Split('.');
+                    if (str.Length == 2)
                     {
-                        if (title == "Index")
+                        try
                         {
-                            baseInformationLocation[0] = i;
-                        }
-                        else if (title == "IsNull")
-                        {
-                            baseInformationLocation[1] = i;
-                        }
-                        else if (title == "IsMore")
-                        {
-                            baseInformationLocation[2] = i;
-                        }
-                        else
-                        {
-                            string[] str = title.Split('.');
-                            if (str.Length == 2)
+                            CultureInfo culture = CultureInfo.GetCultureInfo(str[1]);
+                            if (!otherInformationLocation.ContainsKey(culture))
                             {
-                                try
+                                switch (str[0])
                                 {
-                                    CultureInfo culture = CultureInfo.GetCultureInfo(str[1]);
-                                    if (!otherInformationLocation.ContainsKey(culture))
-                                    {
-                                        switch (str[0])
-                                        {
-                                            case "Name": otherInformationLocation.Add(culture, new int[2] { i, -1 }); break;
-                                            case "Description": otherInformationLocation.Add(culture, new int[2] { -1, i }); break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        switch (str[0])
-                                        {
-                                            case "Name": otherInformationLocation[culture][0] = i; break;
-                                            case "Description": otherInformationLocation[culture][1] = i; break;
-                                        }
-                                    }
+                                    case "Name": otherInformationLocation.Add(culture, new int[2] { i, -1 }); break;
+                                    case "Description": otherInformationLocation.Add(culture, new int[2] { -1, i }); break;
                                 }
-                                catch (System.Exception) { }
+                            }
+                            else
+                            {
+                                switch (str[0])
+                                {
+                                    case "Name": otherInformationLocation[culture][0] = i; break;
+                                    case "Description": otherInformationLocation[culture][1] = i; break;
+                                }
                             }
                         }
-                        i++;
+                        catch (System.Exception) { }
                     }
-                    foreach (KeyValuePair<CultureInfo, int[]> locations in otherInformationLocation)
+                }
+                i++;
+            }
+            foreach (KeyValuePair<CultureInfo, int[]> locations in otherInformationLocation)
+            {
+                if (locations.Value[0] == -1 || locations.Value[1] == -1)
+                {
+                    otherInformationLocation.Remove(locations.Key);
+                }
+            }
+            for (int j = 1; j < lines.Length; j++)
+            {
+                string block = lines[j];
+                string[] str = block.Split('\t');
+                if (str.Length > 3 && str.Length % 2 == 1)
+                {
+                    int index = int.Parse(str[baseInformationLocation[0]]);
+                    int row = index / 16 + 1;
+                    int colum = index % 16 + 1;
+                    bool isNull = str[baseInformationLocation[1]].ToLower() == "true";
+                    Dictionary<CultureInfo, string> description = new Dictionary<CultureInfo, string>();
+                    if (isNull)
                     {
-                        if (locations.Value[0] == -1 || locations.Value[1] == -1)
+                        foreach (var a in otherInformationLocation)
                         {
-                            otherInformationLocation.Remove(locations.Key);
+                            description.Add(a.Key, string.Format(LocationText[a.Key], row, colum));
                         }
+                        output.Add(index, new BlockTextureInfo(index)
+                        {
+                            _Description = description,
+                            ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
+                        });
+                    }
+                    else
+                    {
+                        Dictionary<CultureInfo, string> name = new Dictionary<CultureInfo, string>();
+                        foreach (var a in otherInformationLocation)
+                        {
+                            name.Add(a.Key, str[a.Value[0]]);
+                            description.Add(a.Key, string.Format(LocationText[a.Key], row, colum) + "\n" + (str[a.Value[1]].Length == 0 ? str[a.Value[0]] : str[a.Value[1]]) + (str[baseInformationLocation[2]].ToLower() == "true" ? MoreText[a.Key] : ""));
+                        }
+                        output.Add(index, new BlockTextureInfo(index)
+                        {
+                            _Name = name,
+                            _Description = description,
+                            ImageCache = ImageHelper.GetBlockImageFromTexture(inputImage, index, perBlockSize)
+                        });
                     }
                 }
             }
-            System.GC.Collect();
+            GC.Collect();
             return output;
         }
 

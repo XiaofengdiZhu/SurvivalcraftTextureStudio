@@ -53,5 +53,10 @@ namespace SurvivalcraftTextureStudio
             ((DoubleAnimation)ScaleYPreviewingImageStoryboard.Children[0]).To = -PreviewingImageScaleTransform.ScaleY;
             ScaleYPreviewingImageStoryboard.Begin(this);
         }
+
+        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((BlocksPageViewModel)DataContext).InitiateBlockTexturesDictionary();
+        }
     }
 }
