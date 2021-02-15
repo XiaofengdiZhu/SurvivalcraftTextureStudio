@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="favicon.ico" />
     <None Remove="Resources\OriginalBlocksTextureFrom2.2.png" />
+    <None Remove="Resources\xfdzHead.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="MultiLanguageForXAML" Version="2.0.5.1" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1909" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
@@ -31,6 +32,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\OriginalBlocksTextureFrom2.2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\xfdzHead.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -68,6 +72,9 @@
     </None>
     <None Update="Resources\BlocksdataFrom2.2.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\DonateQRCode.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

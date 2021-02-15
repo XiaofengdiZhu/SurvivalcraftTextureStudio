@@ -36,7 +36,7 @@
             <Grid>
                 <StackPanel Orientation="Horizontal">
 
-                    <materialDesign:Card Width="380" Height="220" Margin="8,2,4,16">
+                    <materialDesign:Card Width="320" Height="220" Margin="8,2,4,16">
                         <Grid VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -44,54 +44,86 @@
                             </Grid.RowDefinitions>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <materialDesign:PackIcon Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                     Kind="Github"/>
+                            <Button Width="80" Height="80" Margin="0,16,0,0" HorizontalAlignment="Center"
+                                    VerticalAlignment="Top" Click="GithubButton_Click" Cursor="Hand"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                <materialDesign:PackIcon Width="80" Height="80" Kind="Github"/>
+                            </Button>
 
                             <StackPanel Grid.Column="1">
-                                <TextBlock Margin="16,16,16,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="开源软件"/>
+                                <TextBlock Margin="4,16,8,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="开源软件"/>
 
-                                <TextBlock Margin="16,0,16,8" VerticalAlignment="Top"
+                                <TextBlock Margin="4,0,16,8" VerticalAlignment="Top"
                                            Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                           Text="这是一个完全开源的软件，欢迎来Github Star、Watch、Fork三连！" TextWrapping="Wrap"/>
+                                           Text="这是一个完全开源的软件，欢迎来Github Watch、Star、Fork三连！" TextWrapping="Wrap"/>
                             </StackPanel>
 
-                            <Border Grid.Row="1" Grid.ColumnSpan="2" Padding="8" VerticalAlignment="Bottom"
+                            <Border Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
                                     BorderBrush="{DynamicResource MaterialDesignDivider}"
                                     BorderThickness="0,1,0,0">
-                                <DockPanel/>
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Click="WatchChip_Click"
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="EyeOutline"/>
+                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Watch"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Click="StarChip_Click"
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="StarOutline"/>
+                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Star"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Click="ForkChip_Click"
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="SourceFork"/>
+                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Fork"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
                             </Border>
                         </Grid>
                     </materialDesign:Card>
-                    <materialDesign:Card Width="210" Height="220" Margin="4,2,8,16">
+                    <materialDesign:Card Width="320" Height="220" Margin="4,2,8,16">
                         <Grid VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0"/>
+                                <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+                            <Border Width="68" Height="68" Margin="0,22,0,0" HorizontalAlignment="Center"
+                                    VerticalAlignment="Top" CornerRadius="34">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="/Resources/xfdzHead.jpg"/>
+                                </Border.Background>
+                            </Border>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Margin="4,16,16,2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="联系销锋镝铸"/>
 
-                            <Image Grid.RowSpan="5" VerticalAlignment="Stretch" Stretch="UniformToFill"
-                                   StretchDirection="Both"/>
-
-                            <TextBlock Grid.Column="1" Margin="16,16,16,2"
-                                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                       Text="与销锋镝铸联系"/>
-
-                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,6,16,0" VerticalAlignment="Top"
-                                       Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                       Text="销锋镝铸是本软件的开发者，您可以通过以下方式联系我，或者送个鸡腿？" TextWrapping="Wrap"/>
-
-                            <Border Grid.Row="3" Grid.Column="1"
+                                <TextBlock Margin="4,6,16,0" VerticalAlignment="Top"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                           Text="销锋镝铸是本软件的开发者，您可以通过以下方式联系我，或者送个鸡腿？" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
                                     BorderBrush="{DynamicResource MaterialDesignDivider}"
                                     BorderThickness="0,1,0,0">
                                 <Grid Margin="8">
@@ -100,7 +132,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Button x:Name="EmailButton" Grid.Column="0" HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
+                                            VerticalAlignment="Center" Click="EmailButton_Click"
                                             Style="{DynamicResource MaterialDesignFlatButton}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Email"/>
@@ -108,7 +140,7 @@
                                         </StackPanel>
                                     </Button>
                                     <Button x:Name="DonateButton" Grid.Column="1" HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
+                                            VerticalAlignment="Center" Click="DonateButton_Click"
                                             Style="{DynamicResource MaterialDesignFlatButton}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Gift"/>
