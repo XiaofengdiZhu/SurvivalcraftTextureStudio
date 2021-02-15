@@ -127,7 +127,7 @@
                 </Button>
                 <Grid Grid.Column="1" SizeChanged="Grid_SizeChanged">
                     <Border x:Name="PreviewImageBorder" Width="Auto" Height="Auto"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="-100"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
                             Effect="{StaticResource MaterialDesignShadowDepth3}"
                             RenderOptions.BitmapScalingMode="NearestNeighbor"
                             RenderTransformOrigin="0.5,0.5">
@@ -172,6 +172,7 @@
                 </Grid>
                 <ToolBarTray Grid.Column="2" Margin="0,24" HorizontalAlignment="Right"
                              VerticalAlignment="Center"
+                             Effect="{StaticResource MaterialDesignShadowDepth2}"
                              IsEnabled="{Binding IsPreviewing}"
                              IsLocked="True" Orientation="Vertical">
                     <ToolBar ClipToBounds="False" Style="{DynamicResource MyMaterialDesignToolBar}">
@@ -208,7 +209,7 @@
                                             VirtualizingPanel.VirtualizationMode="Recycling">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <wpftk:VirtualizingWrapPanel Margin="0,16" SpacingMode="Uniform"/>
+                        <wpftk:VirtualizingWrapPanel Margin="16" SpacingMode="Uniform"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </wpftk:VirtualizingItemsControl>

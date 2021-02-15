@@ -55,15 +55,6 @@ namespace SurvivalcraftTextureStudio
             MaximizeWindowButton.Tag = WindowState == WindowState.Normal ? "Max" : "Res";
             WindowControlButtonContent.Kind = WindowState == WindowState.Normal ? PackIconKind.WindowMaximize : PackIconKind.WindowRestore;
             Width = float.Parse(Config("WindowWidth"));
-            if (Width < 1180)
-            {
-                WideDrawerToggleButton.Visibility = Visibility.Collapsed;
-                WideDrawerToggleButton.IsChecked = false;
-            }
-            else
-            {
-                NarrowDrawerToggleButton.Visibility = Visibility.Collapsed;
-            }
             Height = float.Parse(Config("WindowHeight"));
             string tempTop = Config("WindowTop");
             if (tempTop.Length > 0)
@@ -213,23 +204,6 @@ namespace SurvivalcraftTextureStudio
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (Width < 1180)
-            {
-                WideDrawerToggleButton.Visibility = Visibility.Collapsed;
-                if (NarrowDrawerToggleButton.Visibility != Visibility.Visible)
-                {
-                    NarrowDrawerToggleButton.Visibility = Visibility.Visible;
-                }
-                WideDrawerToggleButton.IsChecked = false;
-            }
-            else
-            {
-                NarrowDrawerToggleButton.Visibility = Visibility.Collapsed;
-                if (WideDrawerToggleButton.Visibility != Visibility.Visible)
-                {
-                    WideDrawerToggleButton.Visibility = Visibility.Visible;
-                }
-            }
         }
 
         private void WindowControlButton_Selected(object sender, RoutedEventArgs e)

@@ -8,9 +8,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Name="MainWindowName"
         Title="从Excel批量生成Word"
-        Width="525"
-        Height="450"
-        MinWidth="800"
+        Width="1000"
+        Height="600"
+        MinWidth="1000"
         MinHeight="600"
         AllowsTransparency="False"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -115,160 +115,137 @@
         </ResourceDictionary>
     </Window.Resources>
     <materialDesign:DialogHost x:Name="MainWindowOutest" Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost x:Name="NarrowDrawer" IsLeftDrawerOpen="{Binding ElementName=NarrowDrawerToggleButton, Path=IsChecked}" LeftDrawerBackground="{DynamicResource MaterialDesignCardBackground}">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <Border Width="212" Padding="16">
-                    <StackPanel>
-                        <ToggleButton Margin="0,0,0,16" HorizontalAlignment="Right"
-                                      IsChecked="{Binding ElementName=NarrowDrawerToggleButton, Path=IsChecked, Mode=TwoWay}"
-                                      Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Image Width="40" Height="40" VerticalAlignment="Center" Source="favicon.ico"/>
-                            <StackPanel Margin="10,4" HorizontalAlignment="Stretch">
-                                <TextBlock Width="128" lan:Xaml.Key="SoftwareName" TextWrapping="Wrap"/>
-                                <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}" Text="{Binding VersionText}"/>
-                            </StackPanel>
+        <DockPanel>
+            <materialDesign:Card x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch" Panel.ZIndex="100"
+                                 materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
+                                 Background="{DynamicResource MaterialDesignCardBackground}"
+                                 DockPanel.Dock="Left" UniformCornerRadius="0">
+                <StackPanel Margin="16,0,16,16">
+                    <Border Height="24" Margin="-16,0" Background="{DynamicResource MaterialDesignChipBackground}"/>
+                    <StackPanel Margin="0,12,0,0" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                        <Image Width="40" Height="40" VerticalAlignment="Center" Source="favicon.ico"/>
+                        <StackPanel Margin="10,4" HorizontalAlignment="Stretch">
+                            <TextBlock Width="128" lan:Xaml.Key="SoftwareName" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}" Text="{Binding VersionText}"/>
                         </StackPanel>
-                        <Separator Margin="12,20" Style="{StaticResource MaterialDesignSeparator}"/>
-                        <ListBox ItemsSource="{Binding Pages}" SelectedIndex="{Binding ElementName=PagesListBox, Path=SelectedIndex}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="domain:DemoItem">
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon VerticalAlignment="Bottom" Kind="{Binding Icon}"/>
-                                        <TextBlock Margin="10,0,32,0" lan:Xaml.Key="{Binding Name}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
                     </StackPanel>
-                </Border>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel>
-                <materialDesign:Card x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch"
-                                     materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
-                                     Background="{DynamicResource MaterialDesignCardBackground}"
-                                     DockPanel.Dock="Left" UniformCornerRadius="0">
-                    <StackPanel Margin="16,0,16,16">
-                        <Border Height="24" Margin="-16,0" Background="{DynamicResource MaterialDesignChipBackground}"/>
-                        <StackPanel Margin="0,12,0,0" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <Image Width="40" Height="40" VerticalAlignment="Center" Source="favicon.ico"/>
-                            <StackPanel Margin="10,4" HorizontalAlignment="Stretch">
-                                <TextBlock Width="128" lan:Xaml.Key="SoftwareName" TextWrapping="Wrap"/>
-                                <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}" Text="{Binding VersionText}"/>
-                            </StackPanel>
+                    <Separator Margin="12,20" Style="{StaticResource MaterialDesignSeparator}"/>
+                    <ListBox x:Name="PagesListBox" ItemsSource="{Binding Pages}" SelectedIndex="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="domain:DemoItem">
+                                <StackPanel IsEnabled="False" Orientation="Horizontal">
+                                    <materialDesign:PackIcon VerticalAlignment="Bottom" Kind="{Binding Icon}"/>
+                                    <TextBlock Margin="10,0,32,0" lan:Xaml.Key="{Binding Name}" IsEnabled="False"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </materialDesign:Card>
+            <materialDesign:ColorZone Height="24" materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                      DockPanel.Dock="Top" Mode="PrimaryDark">
+                <DockPanel>
+                    <StackPanel Height="24" DockPanel.Dock="Left" Orientation="Horizontal"
+                                Visibility="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource InverseBoolToVisConverter}}">
+                        <Image Width="20" Height="20" Margin="4,0,4,0" VerticalAlignment="Center"
+                               Source="favicon.ico"/>
+                        <TextBlock VerticalAlignment="Center" lan:Xaml.Key="SoftwareName" FontSize="12"
+                                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"/>
+                    </StackPanel>
+                    <ListBox Padding="0" HorizontalAlignment="Right"
+                             Background="{DynamicResource PrimaryHueDarkBrush}"
+                             DockPanel.Dock="Right" SelectionMode="Extended"
+                             Style="{StaticResource MaterialDesignToolToggleFlatListBox}"
+                             WindowChrome.IsHitTestVisibleInChrome="True">
+                        <ListBoxItem Selected="WindowControlButton_Selected" Style="{StaticResource WindowControlButton}" Tag="Min">
+                            <materialDesign:PackIcon Width="16" Kind="WindowMinimize"/>
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="MaximizeWindowButton" Selected="WindowControlButton_Selected"
+                                     Style="{StaticResource WindowControlButton}"
+                                     Tag="Max">
+                            <materialDesign:PackIcon x:Name="WindowControlButtonContent" Width="16" Kind="WindowMaximize"/>
+                        </ListBoxItem>
+                        <ListBoxItem Width="48" BorderBrush="#D0FF0000" Selected="WindowControlButton_Selected"
+                                     Style="{StaticResource WindowControlButton}"
+                                     Tag="CLose">
+                            <materialDesign:PackIcon Width="16" Kind="Close"/>
+                        </ListBoxItem>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:ColorZone>
+            <materialDesign:Card Panel.ZIndex="99" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                 materialDesign:ShadowAssist.ShadowEdges="Bottom"
+                                 Background="{DynamicResource PrimaryHueMidBrush}"
+                                 DockPanel.Dock="Top"
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 UniformCornerRadius="0">
+                <DockPanel Margin="16">
+                    <ToggleButton x:Name="WideDrawerToggleButton" IsChecked="True" Style="{StaticResource MaterialDesignHamburgerToggleButton}">
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="WideDrawer" Storyboard.TargetProperty="Margin"
+                                                            From="-212,0,0,0" To="0" Duration="0:0:0.4">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseOut"/>
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="WideDrawer" Storyboard.TargetProperty="Margin" From="0"
+                                                            To="-212,0,0,0" Duration="0:0:0.4">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseOut"/>
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+                    <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                        <StackPanel>
+                            <Button Content="None"/>
+                            <Separator/>
+                            <Button Click="MenuPopupButton_OnClick" Content="Goodbye"/>
                         </StackPanel>
-                        <Separator Margin="12,20" Style="{StaticResource MaterialDesignSeparator}"/>
-                        <ListBox x:Name="PagesListBox" ItemsSource="{Binding Pages}" SelectedIndex="0">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="domain:DemoItem">
-                                    <StackPanel IsEnabled="False" Orientation="Horizontal">
-                                        <materialDesign:PackIcon VerticalAlignment="Bottom" Kind="{Binding Icon}"/>
-                                        <TextBlock Margin="10,0,32,0" lan:Xaml.Key="{Binding Name}" IsEnabled="False"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </materialDesign:Card>
-                <materialDesign:ColorZone Height="24" materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                          DockPanel.Dock="Top" Mode="PrimaryDark">
-                    <DockPanel>
-                        <ListBox Padding="0" HorizontalAlignment="Right"
-                                 Background="{DynamicResource PrimaryHueDarkBrush}"
-                                 DockPanel.Dock="Right" SelectionMode="Extended"
-                                 Style="{StaticResource MaterialDesignToolToggleFlatListBox}"
-                                 WindowChrome.IsHitTestVisibleInChrome="True">
-                            <ListBoxItem Selected="WindowControlButton_Selected" Style="{StaticResource WindowControlButton}" Tag="Min">
-                                <materialDesign:PackIcon Width="16" Kind="WindowMinimize"/>
-                            </ListBoxItem>
-                            <ListBoxItem x:Name="MaximizeWindowButton" Selected="WindowControlButton_Selected"
-                                         Style="{StaticResource WindowControlButton}"
-                                         Tag="Max">
-                                <materialDesign:PackIcon x:Name="WindowControlButtonContent" Width="16" Kind="WindowMaximize"/>
-                            </ListBoxItem>
-                            <ListBoxItem Width="48" BorderBrush="#D0FF0000" Selected="WindowControlButton_Selected"
-                                         Style="{StaticResource WindowControlButton}"
-                                         Tag="CLose">
-                                <materialDesign:PackIcon Width="16" Kind="Close"/>
-                            </ListBoxItem>
-                        </ListBox>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                     materialDesign:ShadowAssist.ShadowEdges="Bottom"
-                                     Background="{DynamicResource PrimaryHueMidBrush}"
-                                     DockPanel.Dock="Top"
-                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                     UniformCornerRadius="0">
-                    <DockPanel Margin="16">
-                        <ToggleButton x:Name="WideDrawerToggleButton" IsChecked="True" Style="{StaticResource MaterialDesignHamburgerToggleButton}">
-                            <ToggleButton.Triggers>
-                                <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ThicknessAnimation Storyboard.TargetName="WideDrawer" Storyboard.TargetProperty="Margin"
-                                                                From="-212,0,0,0" To="0" Duration="0:0:0.4">
-                                                <ThicknessAnimation.EasingFunction>
-                                                    <SineEase EasingMode="EaseOut"/>
-                                                </ThicknessAnimation.EasingFunction>
-                                            </ThicknessAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ThicknessAnimation Storyboard.TargetName="WideDrawer" Storyboard.TargetProperty="Margin" From="0"
-                                                                To="-212,0,0,0" Duration="0:0:0.4">
-                                                <ThicknessAnimation.EasingFunction>
-                                                    <SineEase EasingMode="EaseOut"/>
-                                                </ThicknessAnimation.EasingFunction>
-                                            </ThicknessAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </ToggleButton.Triggers>
-                        </ToggleButton>
-                        <ToggleButton x:Name="NarrowDrawerToggleButton" IsChecked="False" Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                            <StackPanel>
-                                <Button Content="None"/>
-                                <Separator/>
-                                <Button Click="MenuPopupButton_OnClick" Content="Goodbye"/>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        <Button x:Name="ImportBlocksTextureButton" Width="72" Height="72" Margin="0,-16"
-                                materialDesign:RippleAssist.Feedback="{DynamicResource MaterialDesignFlatButtonRipple}"
-                                materialDesign:RippleAssist.IsCentered="True"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
-                                BorderBrush="Transparent" Click="ImportBlocksTextureButton_Click" Cursor="Hand"
-                                DockPanel.Dock="Right"
-                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                ToolTip="打开材质文件">
-                            <materialDesign:PackIcon Width="24" Height="24" Kind="FolderOpen"/>
-                        </Button>
-                        <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"
-                                   FontSize="22"/>
-                    </DockPanel>
-                </materialDesign:Card>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <ScrollViewer x:Name="scrollViewer" Grid.Row="1"
-                                  Padding="{Binding ElementName=PagesListBox, Path=SelectedItem.MarginRequirement}"
-                                  HorizontalScrollBarVisibility="{Binding ElementName=PagesListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
-                                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
-                                  VerticalScrollBarVisibility="{Binding ElementName=PagesListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}">
-                        <ContentControl Content="{Binding ElementName=PagesListBox, Path=SelectedItem.Content}"/>
-                    </ScrollViewer>
+                    </materialDesign:PopupBox>
+                    <Button x:Name="ImportBlocksTextureButton" Width="72" Height="72" Margin="0,-16"
+                            materialDesign:RippleAssist.Feedback="{DynamicResource MaterialDesignFlatButtonRipple}"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
+                            BorderBrush="Transparent" Click="ImportBlocksTextureButton_Click" Cursor="Hand"
+                            DockPanel.Dock="Right"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            ToolTip="打开材质文件">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="FolderOpen"/>
+                    </Button>
+                    <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                               lan:Xaml.Key="{Binding ElementName=PagesListBox, Path=SelectedItem.Name}"
+                               FontSize="22"/>
+                </DockPanel>
+            </materialDesign:Card>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer x:Name="scrollViewer" Grid.Row="1"
+                              Padding="{Binding ElementName=PagesListBox, Path=SelectedItem.MarginRequirement}"
+                              HorizontalScrollBarVisibility="{Binding ElementName=PagesListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
+                              PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                              VerticalScrollBarVisibility="{Binding ElementName=PagesListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}">
+                    <ContentControl Content="{Binding ElementName=PagesListBox, Path=SelectedItem.Content}"/>
+                </ScrollViewer>
 
-                    <materialDesign:Snackbar x:Name="MainSnackbar" Grid.Row="1" MessageQueue="{materialDesign:MessageQueue}"/>
-                </Grid>
-            </DockPanel>
-        </materialDesign:DrawerHost>
+                <materialDesign:Snackbar x:Name="MainSnackbar" Grid.Row="1" MessageQueue="{materialDesign:MessageQueue}"/>
+            </Grid>
+        </DockPanel>
     </materialDesign:DialogHost>
 </Window>

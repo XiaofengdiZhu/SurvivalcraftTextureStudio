@@ -22,13 +22,10 @@
             <Image Width="100" Height="100" Source="/favicon.ico" Stretch="Uniform"/>
             <StackPanel Grid.Column="1" Margin="24,0,0,0" VerticalAlignment="Center">
                 <TextBlock Style="{StaticResource MaterialDesignHeadline4TextBlock}" Text="欢迎使用生存战争材质制作器！" TextWrapping="Wrap"/>
-                <Button Margin="0,12,0,0"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
-                        CommandParameter="{x:Static Dock.Left}">
+                <Button Margin="0,12,0,0" Click="Button_Click" Style="{StaticResource MaterialDesignFlatButton}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Binoculars"/>
-                        <TextBlock Margin="8,0,0,0" Text="开始探索"/>
+                        <TextBlock Margin="8,0,0,0" Text="打开你的材质"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -38,6 +35,37 @@
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Grid>
                 <StackPanel Orientation="Horizontal">
+
+                    <materialDesign:Card Width="380" Height="220" Margin="8,2,4,16">
+                        <Grid VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                     Kind="Github"/>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Margin="16,16,16,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="开源软件"/>
+
+                                <TextBlock Margin="16,0,16,8" VerticalAlignment="Top"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                           Text="这是一个完全开源的软件，欢迎来Github Star、Watch、Fork三连！" TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <Border Grid.Row="1" Grid.ColumnSpan="2" Padding="8" VerticalAlignment="Bottom"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                    BorderThickness="0,1,0,0">
+                                <DockPanel/>
+                            </Border>
+                        </Grid>
+                    </materialDesign:Card>
                     <materialDesign:Card Width="210" Height="220" Margin="4,2,8,16">
                         <Grid VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
@@ -57,92 +85,37 @@
 
                             <TextBlock Grid.Column="1" Margin="16,16,16,2"
                                        Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                       Text="与作者联系"/>
+                                       Text="与销锋镝铸联系"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,16,8" VerticalAlignment="Center"
+                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,6,16,0" VerticalAlignment="Top"
                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                       Text="道声谢，请求新功能，反馈错误，来撩我啊" TextWrapping="Wrap"/>
-
-                            <Border Grid.Row="2" Grid.Column="1" Margin="0,8,0,0"
-                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                    BorderThickness="0,1,0,0">
-                                <Grid Margin="8">
-                                    <Button x:Name="GitHubButton" HorizontalAlignment="Left" Style="{DynamicResource MaterialDesignFlatButton}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Github"/>
-                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="GitHub"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <Button x:Name="TwitterButton" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Twitter"/>
-                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Twitter"/>
-                                        </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                                       Text="销锋镝铸是本软件的开发者，您可以通过以下方式联系我，或者送个鸡腿？" TextWrapping="Wrap"/>
 
                             <Border Grid.Row="3" Grid.Column="1"
                                     BorderBrush="{DynamicResource MaterialDesignDivider}"
                                     BorderThickness="0,1,0,0">
                                 <Grid Margin="8">
-                                    <Button x:Name="ChatButton" HorizontalAlignment="Left" Style="{DynamicResource MaterialDesignFlatButton}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Message"/>
-                                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Chat"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <Button x:Name="EmailButton" HorizontalAlignment="Right" Style="{DynamicResource MaterialDesignFlatButton}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="EmailButton" Grid.Column="0" HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Email"/>
                                             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Email"/>
                                         </StackPanel>
                                     </Button>
-                                </Grid>
-                            </Border>
-                        </Grid>
-                    </materialDesign:Card>
-
-                    <materialDesign:Card Width="380" Height="220" Margin="8,2,4,16">
-                        <Grid VerticalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <materialDesign:PackIcon Width="140" Height="140" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                     Kind="Github"/>
-
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Margin="16,16,16,8" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="开源软件"/>
-
-                                <TextBlock Margin="16,0,16,8" VerticalAlignment="Top"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                           Text="这是一个完全开源的软件，欢迎来Github Star、Watch、Fork三连！" TextWrapping="Wrap"/>
-                            </StackPanel>
-
-                            <Border Grid.Row="1" Grid.ColumnSpan="2" Padding="8"
-                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                    BorderThickness="0,1,0,0">
-                                <DockPanel>
-                                    <Button x:Name="DonateButton" DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFlatButton}">
+                                    <Button x:Name="DonateButton" Grid.Column="1" HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Gift"/>
                                             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="捐赠"/>
                                         </StackPanel>
                                     </Button>
-
-                                    <TextBlock Margin="16" VerticalAlignment="Center"
-                                               Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                               Text="爽到了？点击右边按钮给开发者加鸡腿吧！" TextWrapping="Wrap"/>
-                                </DockPanel>
+                                </Grid>
                             </Border>
                         </Grid>
                     </materialDesign:Card>

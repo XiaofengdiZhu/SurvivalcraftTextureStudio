@@ -196,8 +196,18 @@ namespace SurvivalcraftTextureStudio
                 if (openFileDialog.ShowDialog().Value)
                 {
                     ImportBlocksTexture(File.ReadAllText(BlocksdataPath, Encoding.UTF8), Image.Load(new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read)));
+                    IsOperatingBlocksTexture = false;
+                    MainWindow.MW.Dispatcher.BeginInvoke(new Action(() => {
+                        if (MainWindow.MW.PagesListBox.SelectedIndex != 2)
+                        {
+                            MainWindow.MW.PagesListBox.SelectedIndex = 2;
+                        }
+                    }));
                 }
-                IsOperatingBlocksTexture = false;
+                else
+                {
+                    IsOperatingBlocksTexture = false;
+                }
             });
             ImportThread.SetApartmentState(ApartmentState.STA);
             ImportThread.Start();

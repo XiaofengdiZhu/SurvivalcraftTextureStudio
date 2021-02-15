@@ -61,7 +61,7 @@
         <StackPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.BlockSizeSliderValue, Mode=OneWay}"
                     Margin="8"
                     ToolTip="{Binding Description}"
-                    ToolTipService.InitialShowDelay="1000" ToolTipService.Placement="MousePoint">
+                    ToolTipService.InitialShowDelay="1000" ToolTipService.Placement="Right">
             <Border Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BlocksPage}}, Path=DataContext.BlockSizeSliderValue, Mode=OneWay}"
                     CornerRadius="12"
                     FocusVisualStyle="{x:Null}"

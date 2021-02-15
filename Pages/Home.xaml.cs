@@ -9,5 +9,10 @@
             InitializeComponent();
             HM = this;
         }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            BlocksPageViewModel.BPVM.ImportBlocksTextureBySelectingFile();
+        }
     }
 }
