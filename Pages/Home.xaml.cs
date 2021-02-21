@@ -50,5 +50,9 @@ namespace SurvivalcraftTextureStudio
         {
             OpenLink("https://github.com/XiaofengdiZhu/SurvivalcraftTextureStudio/");
         }
+        private void AuthorHeadButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OpenLink("https://github.com/XiaofengdiZhu/");
+        }
     }
 }

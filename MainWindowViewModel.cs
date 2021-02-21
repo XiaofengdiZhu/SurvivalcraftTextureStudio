@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SurvivalcraftTextureStudio
 {
@@ -24,5 +25,27 @@ namespace SurvivalcraftTextureStudio
 
         public Page[] Pages { get; }
         public string VersionText { get; set; }
+        public ICommand OpenImportBlocksTextureDialogCommand => new AnotherCommandImplementation(OpenImportBlocksTextureDialog);
+        public async void OpenImportBlocksTextureDialog(object o)
+        {
+            //let's set up a little MVVM, cos that's what the cool kids are doing:
+            var view = new ImportBlocksTextureDialog
+            {
+                DataContext = new ImportBlocksTextureDialogViewModel()
+            };
+
+            //show the dialog
+            var result = await DialogHost.Show(view, "RootDialog", ExtendedOpenedEventHandler, ExtendedClosingEventHandler);
+
+            //check the result...
+            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was: " + (result ?? "NULL"));
+        }
+        private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        {
+        }
+
+        private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+        }
     }
 }

@@ -114,7 +114,8 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DialogHost x:Name="MainWindowOutest" Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+    <materialDesign:DialogHost x:Name="MainWindowOutest" CloseOnClickAway="True" Identifier="RootDialog"
+                               SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <DockPanel>
             <materialDesign:Card x:Name="WideDrawer" Width="212" VerticalAlignment="Stretch" Panel.ZIndex="100"
                                  materialDesign:ShadowAssist.ShadowDepth="{Binding ElementName=WideDrawerToggleButton, Path=IsChecked, Converter={StaticResource wideDrawerConverter}}"
@@ -215,6 +216,17 @@
                             <Button Click="MenuPopupButton_OnClick" Content="Goodbye"/>
                         </StackPanel>
                     </materialDesign:PopupBox>
+                    <Button Width="72" Height="72" Margin="0,-16"
+                            materialDesign:RippleAssist.Feedback="{DynamicResource MaterialDesignFlatButtonRipple}"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0" Background="Transparent"
+                            BorderBrush="Transparent" Cursor="Hand" DockPanel.Dock="Right"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            ToolTip="打开材质文件"
+                            Command="{Binding OpenImportBlocksTextureDialogCommand}">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="FolderAccount"/>
+                    </Button>
                     <Button x:Name="ImportBlocksTextureButton" Width="72" Height="72" Margin="0,-16"
                             materialDesign:RippleAssist.Feedback="{DynamicResource MaterialDesignFlatButtonRipple}"
                             materialDesign:RippleAssist.IsCentered="True"
@@ -223,7 +235,8 @@
                             DockPanel.Dock="Right"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            ToolTip="打开材质文件">
+                            ToolTip="打开材质文件"
+                            Command="{Binding OpenImportBlocksTextureDialogCommand}">
                         <materialDesign:PackIcon Width="24" Height="24" Kind="FolderOpen"/>
                     </Button>
                     <TextBlock Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"

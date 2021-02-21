@@ -50,7 +50,9 @@
 
                             <Button Width="80" Height="80" Margin="0,16,0,0" HorizontalAlignment="Center"
                                     VerticalAlignment="Top" Click="GithubButton_Click" Cursor="Hand"
-                                    Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                    ToolTip="https://github.com/XiaofengdiZhu/SurvivalcraftTextureStudio/"
+                                    ToolTipService.Placement="Bottom">
                                 <materialDesign:PackIcon Width="80" Height="80" Kind="Github"/>
                             </Button>
 
@@ -110,12 +112,16 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Width="68" Height="68" Margin="0,22,0,0" HorizontalAlignment="Center"
-                                    VerticalAlignment="Top" CornerRadius="34">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="/Resources/xfdzHead.jpg"/>
-                                </Border.Background>
-                            </Border>
+                            <Button Width="80" Height="80" Margin="0,16,0,0" HorizontalAlignment="Center"
+                                    VerticalAlignment="Top" Click="AuthorHeadButton_Click" Cursor="Hand"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                <Border Width="68" Height="68" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        CornerRadius="34">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="/Resources/xfdzHead.jpg"/>
+                                    </Border.Background>
+                                </Border>
+                            </Button>
                             <StackPanel Grid.Column="1">
                                 <TextBlock Margin="4,16,16,2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="联系销锋镝铸"/>
 
@@ -132,8 +138,9 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Button x:Name="EmailButton" Grid.Column="0" HorizontalAlignment="Center"
-                                            VerticalAlignment="Center" Click="EmailButton_Click"
-                                            Style="{DynamicResource MaterialDesignFlatButton}">
+                                            VerticalAlignment="Center" Click="EmailButton_Click" Cursor="Hand"
+                                            Style="{DynamicResource MaterialDesignFlatButton}"
+                                            ToolTip="523084467@qq.com" ToolTipService.Placement="Bottom">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Email"/>
                                             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="Email"/>
